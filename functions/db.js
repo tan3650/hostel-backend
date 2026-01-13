@@ -1,13 +1,18 @@
 const mysql = require("mysql2");
 
-// Railway provides MYSQL_URL automatically
-const db = mysql.createConnection(process.env.MYSQL_URL);
+const db = mysql.createConnection({
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT,
+});
 
-db.connect((err) => {
+db.connect(err => {
   if (err) {
-    console.error(" MySQL connection failed:", err);
+    console.error("❌ MySQL failed:", err);
   } else {
-    console.log(" Connected to Railway MySQL");
+    console.log("✅ MySQL connected");
   }
 });
 
