@@ -2,9 +2,13 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-
+console.log("DB HOST:", process.env.MYSQLHOST);
 // middleware
-app.use(cors({ origin: "*" }));
+app.use(cors({ 
+  origin: ["https://hostel-management-fbproj.web.app"], // Allow both production and local testing
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true 
+}));
 app.use(express.json());
 
 // routes
