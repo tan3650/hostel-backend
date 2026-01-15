@@ -2654,6 +2654,8 @@
                     </p>
                 </div>
                 <div class="list-item-actions">
+                    <button class="btn-sm btn-primary"
+                        onclick="viewAnonReport(${r.id})">View</button>
 
                     <button class="btn-sm btn-warning"
                         onclick="updateAnonStatus(${r.id}, 'In Review')">In Review</button>
@@ -3175,6 +3177,7 @@
                     <p>${c.description.substring(0, 100)}...</p>
                 </div>
                 <div class="list-item-actions">
+
 <button class="btn-sm btn-success"
     onclick="updateComplaintStatus('${c.id}', 'Resolved')">
     Resolve
@@ -3401,6 +3404,13 @@
       </div>
     </div>
   `;
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+
+            modal.classList.remove('active');
         }
 
 
