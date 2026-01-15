@@ -3254,79 +3254,128 @@
         document.getElementById("announcementForm")?.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            const title = document.getElementById("announcementTitle").value.trim();
-            const content = document.getElementById("announcementText").value.trim();
+            const title = announcementTitle.value.trim();
+            const content = announcementText.value.trim();
 
-            if (!title || !content) return alert("Fill all fields");
+            if (!title || !content) {
+                alert("Please fill all fields");
+                return;
+            }
 
-            await fetch(`${API_BASE}/announcements`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({
-                    title,
-                    content,
-                    posted_by: currentUser.name
-                })
-            });
+            try {
+                const res = await fetch(`${API_BASE}/announcements`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        title,
+                        content,
+                        posted_by: currentUser.name
+                    })
+                });
 
-            document.getElementById("announcementForm").reset();
-            loadAnnouncements();
-            loadAnnouncementsPreview();
-            loadWardenAnnouncementsPreview();
+                if (!res.ok) throw new Error("Post failed");
+
+                alert("Announcement posted successfully");
+                announcementForm.reset();
+
+                // refresh everywhere
+                loadAnnouncements();               // warden list
+                loadWardenAnnouncementsPreview();  // warden dashboard
+                loadAnnouncementsPreview();        // student dashboard
+
+            } catch (err) {
+                console.error(err);
+                alert("Failed to post announcement");
+            }
         });
+
 
         // LOAD ANNOUNCEMENTS (WARDEN)
         async function loadAnnouncements() {
-            const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
-            const data = await res.json();
+            try {
+                const res = await fetch(`${API_BASE}/announcements`);
+                const announcements = await res.json();
 
-            document.getElementById("announcementsList").innerHTML =
-                data.length === 0
-                    ? `<div class="empty-state"><h3>No announcements</h3></div>`
-                    : data.map(a => `
-          <div class="notification info">
-            <div class="notification-content">
-              <h4>${a.title}</h4>
-              <p>${a.content}</p>
-              <p style="font-size:12px;">${new Date(a.created_at).toLocaleString()}</p>
+                if (!announcements.length) {
+                    announcementsList.innerHTML =
+                        `<div class="empty-state"><h3>No announcements yet</h3></div>`;
+                    return;
+                }
+
+                announcementsList.innerHTML = announcements.map(a => `
+            <div class="notification info">
+                <div class="notification-content">
+                    <h4>${a.title}</h4>
+                    <p>${a.content}</p>
+                    <p style="font-size:12px;">
+                        Posted by ${a.posted_by} ·
+                        ${new Date(a.created_at).toLocaleString()}
+                    </p>
+                </div>
             </div>
-          </div>
         `).join("");
+
+            } catch (err) {
+                console.error(err);
+                alert("Failed to load announcements");
+            }
         }
+
 
         // STUDENT PREVIEW
         async function loadAnnouncementsPreview() {
-            const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
-            const data = await res.json();
-            if (!data.length) return;
+            try {
+                const res = await fetch(`${API_BASE}/announcements`);
+                const data = await res.json();
 
-            const a = data[0];
-            document.getElementById("announcementsPreview").innerHTML = `
-    <div class="notification info">
-      <div class="notification-content">
-        <h4>${a.title}</h4>
-        <p>${a.content}</p>
-      </div>
-    </div>
-  `;
+                if (!data.length) {
+                    announcementsPreview.innerHTML =
+                        `<div class="empty-state">No announcements</div>`;
+                    return;
+                }
+
+                const latest = data[0];
+
+                announcementsPreview.innerHTML = `
+            <div class="notification info">
+                <div class="notification-content">
+                    <h4>${latest.title}</h4>
+                    <p>${latest.content}</p>
+                </div>
+            </div>
+        `;
+            } catch (err) {
+                console.error(err);
+            }
         }
+
 
         // STUDENT VIEW ALL
         async function loadAllAnnouncements() {
-            const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
-            const data = await res.json();
+            try {
+                const res = await fetch(`${API_BASE}/announcements`);
+                const data = await res.json();
 
-            document.getElementById("announcementsFullList").innerHTML =
-                data.map(a => `
-      <div class="notification info">
-        <div class="notification-content">
-          <h4>${a.title}</h4>
-          <p>${a.content}</p>
-        </div>
-      </div>
-    `).join("");
+                announcementsFullList.innerHTML = data.length === 0
+                    ? `<div class="empty-state"><h3>No announcements</h3></div>`
+                    : data.map(a => `
+                <div class="notification info">
+                    <div class="notification-content">
+                        <h4>${a.title}</h4>
+                        <p>${a.content}</p>
+                        <p style="font-size:12px;">
+                            ${new Date(a.created_at).toLocaleString()}
+                        </p>
+                    </div>
+                </div>
+            `).join("");
+
+            } catch (err) {
+                console.error(err);
+                alert("Failed to load announcements");
+            }
         }
+
 
         // WARDEN DASHBOARD PREVIEW
         async function loadWardenAnnouncementsPreview() {
