@@ -3196,6 +3196,9 @@
                 alert("Failed to load complaints");
             }
         }
+        function normalizeStatus(status) {
+            return status.toLowerCase().replace(/\s+/g, '-');
+        }
 
         async function updateComplaintStatus(complaintId, newStatus) {
             try {
@@ -3223,7 +3226,6 @@
                 // 🔄 Refresh everything that depends on complaints
                 loadWardenComplaints();
                 renderWardenDashboard();
-                loadStudentComplaints();
 
             } catch (err) {
                 console.error(err);
