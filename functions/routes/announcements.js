@@ -4,25 +4,22 @@ const db = require("../db");
 
 /**
  * POST /announcements
- * Create announcement (warden)
+ * Warden posts announcement
+ * Default status = Published (Posted)
  */
 router.post("/", (req, res) => {
-  const { title, content, posted_by, status } = req.body;
+  const { title, content, posted_by } = req.body;
 
   if (!title || !content || !posted_by) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  const finalStatus = ["Draft", "Published", "Archived"].includes(status)
-    ? status
-    : "Published";
-
   const sql = `
     INSERT INTO announcements (title, content, posted_by, status)
-    VALUES (?, ?, ?, ?)
+    VALUES (?, ?, ?, 'Published')
   `;
 
-  db.query(sql, [title, content, posted_by, finalStatus], (err, result) => {
+  db.query(sql, [title, content, posted_by], (err, result) => {
     if (err) {
       console.error("❌ Announcement insert error:", err);
       return res.status(500).json({ error: "Database error" });
@@ -30,7 +27,7 @@ router.post("/", (req, res) => {
 
     res.json({
       success: true,
-      message: "Announcement created",
+      message: "Announcement posted",
       id: result.insertId
     });
   });
@@ -38,16 +35,15 @@ router.post("/", (req, res) => {
 
 /**
  * GET /announcements
- * Fetch announcements
- * ?all=true  → warden sees all
- * default    → students see only Published
+ * Students + Warden → only Posted (Published)
  */
 router.get("/", (req, res) => {
-  const showAll = req.query.all === "true";
-
-  const sql = showAll
-    ? "SELECT * FROM announcements ORDER BY created_at DESC"
-    : "SELECT * FROM announcements WHERE status='Published' ORDER BY created_at DESC";
+  const sql = `
+    SELECT *
+    FROM announcements
+    WHERE status = 'Published'
+    ORDER BY created_at DESC
+  `;
 
   db.query(sql, (err, rows) => {
     if (err) {
@@ -60,8 +56,25 @@ router.get("/", (req, res) => {
 });
 
 /**
+ * GET /announcements/all
+ * Warden → see everything
+ */
+router.get("/all", (req, res) => {
+  db.query(
+    "SELECT * FROM announcements ORDER BY created_at DESC",
+    (err, rows) => {
+      if (err) {
+        console.error("❌ Fetch all announcements error:", err);
+        return res.status(500).json({ error: "DB error" });
+      }
+      res.json(rows);
+    }
+  );
+});
+
+/**
  * PUT /announcements/:id
- * Update announcement status (warden)
+ * Warden updates status
  */
 router.put("/:id", (req, res) => {
   const { status } = req.body;
