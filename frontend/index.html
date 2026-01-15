@@ -37,15 +37,15 @@
 
         /* Dark Mode */
         body.dark-mode {
-            --primary-color: #7b4da8;
+            --primary-color: #7649b9;
             --secondary-color: #86b6de;
-            --success-color: #4caf8f;
+            --success-color: #4ea6ff;
             --danger-color: #d16b6b;
             --warning-color: #d68910;
             --light-bg: #2b174c;
             --white: #3b235f;
-            --text-dark: #ecf0f1;
-            --text-light: #bfaee3;
+            --text-dark: #d55edb;
+            --text-light: #6966e7;
             --border-color: #5c3b8a;
         }
 
@@ -162,7 +162,7 @@
         }
 
         .btn-secondary {
-            background-color: #95a5a6;
+            background-color: #959da6;
             color: var(--white);
         }
 
@@ -482,6 +482,10 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: var(--shadow);
+            position: sticky;
+            top: 110px;
+            /* adjust to your header height */
+            z-index: 1000;
         }
 
         nav ul {
@@ -788,18 +792,18 @@
     <div id="rolePage" class="page active">
         <div class="container">
             <header style="text-align: center; margin-top: 40px;">
-                <h1>🏥 Digital Hostel Management System</h1>
+                <h1> Digital Hostel Management System</h1>
             </header>
             <div class="role-selection">
                 <div class="role-card" onclick="selectRole('student')">
-                    <h2>👨‍🎓</h2>
+                    <h2>👩🏻‍🎓</h2>
                     <h3>Student Login</h3>
                     <p>Access your hostel dashboard</p>
                     <button class="btn-secondary" onclick="selectRole('student')" style="margin-top: 10px;">Login as
                         Student</button>
                 </div>
                 <div class="role-card" onclick="selectRole('warden')">
-                    <h2>👨‍💼</h2>
+                    <h2>👩🏻‍💼</h2>
                     <h3>Warden Login</h3>
                     <p>Manage hostel operations</p>
                     <button class="btn-secondary" onclick="selectRole('warden')" style="margin-top: 10px;">Login as
@@ -873,19 +877,18 @@
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number *</label>
-                        <input type="text" id="phone" required>
+                        <input type="tel" id="phone" pattern="[0-9]+" required>
                     </div>
                     <div class="form-group">
                         <label for="parentName">Parent Name *</label>
                         <input type="text" id="parentName" required>
                     </div>
                     <div class="form-group">
-                        <label for="parentContact">Parent Contact (Numeric) *</label>
+                        <label for="parentContact">Parent Contact *</label>
                         <input type="tel" id="parentContact" pattern="[0-9]+" required>
                     </div>
                     <div class="form-group">
                         <label for="college">College Name *</label>
-                        <!-- <label for="College Name">College Name *</label> -->
                         <input type="text" id="college" required>
                     </div>
                     <div class="form-group">
@@ -897,8 +900,8 @@
                         <input type="text" id="roomNumber" required>
                     </div>
                     <div class="form-group">
-                        <label for="remainingFee">Remaining Fee (₹) *</label>
-                        <input type="number" id="remainingFee" min="0" required>
+                        <label for="admissionDate">Admission Date *</label>
+                        <input type="date" id="admissionDate" required>
                     </div>
                     <div class="form-group">
                         <label for="idProof">ID Card/Fee Receipt Photo *</label>
@@ -914,7 +917,6 @@
                     </div>
                     <div style="grid-column: 1/-1; display: flex; gap: 10px;">
                         <button class="btn-success" onclick="handleStudentRegister()" style="flex: 1;">Register</button>
-                        <!-- <button class="btn-secondary" onclick="backToLogin()" style="flex: 1;">Back to Login</button> -->
                         <button class="btn-secondary" onclick="goBackToRole()" style="width: 50%;">Back to
                             Login</button>
                     </div>
@@ -945,7 +947,7 @@
                     </div>
                     <div class="form-group">
                         <label for="wardenPhone">Phone Number *</label>
-                        <input type="text" id="wardenPhone" required>
+                        <input type="tel" id="wardenPhone" pattern="[0-9]+" required>
                     </div>
                     <div class="form-group">
                         <label for="wardenDOB">Date of Birth *</label>
@@ -995,7 +997,7 @@
                             <button class="btn-sm btn-secondary" onclick="setFontSize('large')">A+</button>
                             <button class="btn-sm btn-secondary" onclick="setFontSize('extra-large')">A++</button>
                         </div>
-                        <button class="btn-sm btn-secondary" onclick="toggleDarkMode()" id="themeBtn">🌙 Dark</button>
+                        <button class="btn-sm btn-secondary" onclick="toggleDarkMode()" id="themeBtn">.✦Dark ݁˖</button>
                     </div>
                     <button class="btn-danger" onclick="logout()">Logout</button>
                 </div>
@@ -1010,9 +1012,6 @@
                     <li><button class="nav-btn" onclick="switchTab('dashboard')"
                             data-label="dashboard">Dashboard</button></li>
                     <li><button class="nav-btn" onclick="switchTab('profile')" data-label="profile">Profile</button>
-                    <li>
-                        <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button>
-                    </li>
                     </li>
                     <li><button class="nav-btn" onclick="switchTab('status')" data-label="status">Status</button></li>
                     <li><button class="nav-btn" onclick="switchTab('complaint')" data-label="complaint">Register
@@ -1025,21 +1024,32 @@
                             Request</button></li>
                     <li><button class="nav-btn" onclick="switchTab('anonymous')" data-label="anonymous">Anonymous
                             Report</button></li>
+                    <li>
+                        <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button>
+                    </li>
                 </ul>
             </nav>
 
             <!-- Warden Navigation -->
-            <!-- <nav id="wardenNav" class="hidden">
+            <nav id="wardenNav" class="hidden">
                 <ul>
-                    <li><button class="nav-btn" onclick="switchTab('dashboard')" data-label="dashboard">Dashboard</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('warden-profile')" data-label="profile">Profile</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('complaints-manage')" data-label="complaints_manage">Manage Complaints</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('leave-manage')" data-label="leave_manage">Approve Leaves</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort Requests</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('anonymous-manage')" data-label="anonymous_manage">Anonymous Reports</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('announcements')" data-label="announcements">Announcements</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('dashboard')"
+                            data-label="dashboard">Dashboard</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('warden-profile')"
+                            data-label="profile">Profile</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('complaints-manage')"
+                            data-label="complaints_manage">Manage Complaints</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('leave-manage')" data-label="leave_manage">Approve
+                            Leaves</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort
+                            Requests</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('anonymous-manage')"
+                            data-label="anonymous_manage">Anonymous Reports</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('announcements')"
+                            data-label="announcements">Announcements</button></li>
+                    <li> <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button></li>
                 </ul>
-            </nav> -->
+            </nav>
 
             <!-- Student Dashboard -->
             <div id="studentDashboard" class="tab-content active">
@@ -1065,16 +1075,6 @@
                 <div id="recentActivityList"></div>
             </div>
 
-            <!-- Warden Dashboard -->
-            <!-- <div id="wardenDashboard" class="tab-content">
-                <div class="dashboard-grid" id="wardenDashboardCards"></div>
-                <div class="section-title" style="margin-top: 30px;">📢 Announcements</div>
-                <div id="wardenAnnouncementsPreview"></div>
-                <button class="btn-primary" onclick="switchTab('announcements')" style="margin-bottom: 20px;">View All Announcements</button>
-                <div class="section-title">📋 Recent Activities</div>
-                <div id="wardenRecentActivities"></div>
-            </div> -->
-
             <!-- Student Profile -->
             <div id="studentProfile" class="tab-content hidden">
                 <div class="section-title" data-label="profile_info">Profile Information</div>
@@ -1091,41 +1091,41 @@
                 </p>
 
                 <div class="card" style="white-space: pre-line; line-height: 1.7;">
-                    A. Curfew & Attendance
+                    <b>A. Curfew & Attendance</b>
                     • Weekday curfew: 21:00 (9:00 PM)
                     • Weekend curfew: 21:30 (9:30 PM)
                     • Daily attendance at ground floor is mandatory
                     • Late return fine: ₹100 per hour
 
-                    B. Leave & Permissions
+                    <b>B. Leave & Permissions</b>
                     • All night-out requests must be submitted via system
                     • Parent contact required
                     • Approval is warden’s discretion
 
-                    C. Conduct & Safety
+                    <b>C. Conduct & Safety</b>
                     • No loud music or violence
                     • Drugs, alcohol, smoking prohibited
                     • Sharp objects prohibited
 
-                    D. Fire & Festivals
+                    <b>D. Fire & Festivals</b>
                     • Firecrackers prohibited
                     • Unsafe celebrations banned
 
-                    E. Appliances & Food
+                    <b>E. Appliances & Food</b>
                     • Only permitted appliances
                     • Kitchen closed after 12 AM
                     • No food delivery after 11:30 PM
 
-                    F. Property & Fees
+                    <b>F. Property & Fees</b>
                     • Damage fine: ₹5,000 or actual cost
                     • Late fee penalties apply
 
-                    G. Miscellaneous
+                    <b>G. Miscellaneous</b>
                     • Hostel not responsible for belongings
                     • Gates open at 6:00 AM
                     • Room allocation by authority
 
-                    H. Enforcement
+                    <b>H. Enforcement</b>
                     • Violations may lead to fines or eviction
                     • Rules may be updated anytime
                 </div>
@@ -1305,36 +1305,6 @@
                 <div id="announcementsFullList"></div>
             </div>
 
-            <!-- Warden Navigation -->
-            <nav id="wardenNav" class="hidden">
-                <ul>
-                    <li><button class="nav-btn" onclick="switchTab('dashboard')"
-                            data-label="dashboard">Dashboard</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('warden-profile')"
-                            data-label="profile">Profile</button></li>
-                    <!-- <li><button class="nav-btn" onclick="switchTab('dashboard')"
-                            data-label="dashboard">Dashboard</button></li> -->
-                    <!-- <button class="nav-btn" onclick="switchTab('warden-profile')"
-                            data-label="profile">Profile</button></li> -->
-                    <li><button class="nav-btn" onclick="switchTab('complaints-manage')"
-                            data-label="complaints_manage">Manage Complaints</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('leave-manage')" data-label="leave_manage">Approve
-                            Leaves</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort
-                            Requests</button></li>
-                    <!-- <li><button class="nav-btn" onclick="switchTab('complaints-manage')"
-                            data-label="complaints_manage">Manage Complaints</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('leave-manage')" data-label="leave_manage">Approve
-                            Leaves</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort
-                            Requests</button></li> -->
-                    <li><button class="nav-btn" onclick="switchTab('anonymous-manage')"
-                            data-label="anonymous_manage">Anonymous Reports</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('announcements')"
-                            data-label="announcements">Announcements</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('rulebook')" data-label="rulebook"> Rule Book</button> </li>
-                </ul>
-            </nav>
 
             <!-- Warden Dashboard -->
             <div id="wardenDashboard" class="tab-content">
@@ -1442,7 +1412,18 @@
     <script>
         // ================= BACKEND CONFIG =================
         const API_BASE = "https://hostel-backend-production-9c02.up.railway.app";
+        // ========== WARDEN RECENT ACTIVITIES (SAFE STUB) ==========
+        function loadWardenRecentActivities() {
+            const container = document.getElementById("wardenRecentActivities");
+            if (!container) return;
 
+            container.innerHTML = `
+        <div class="empty-state">
+            <h3>No recent activities</h3>
+            <p>Recent complaints, leaves, escorts will appear here.</p>
+        </div>
+    `;
+        }
 
         // ========== TRANSLATIONS ==========
         const translations = {
@@ -1617,30 +1598,6 @@
         function initializeApp() {
             const escorts = JSON.parse(localStorage.getItem('escorts')) || [];
             const myEscorts = escorts.filter(e => e.studentId === currentUser.id);
-
-
-
-
-            if (!localStorage.getItem('leaves')) {
-                localStorage.setItem('leaves', JSON.stringify([]));
-            }
-
-            if (!localStorage.getItem('escorts')) {
-                localStorage.setItem('escorts', JSON.stringify([]));
-            }
-
-            if (!localStorage.getItem('anonymousReports')) {
-                localStorage.setItem('anonymousReports', JSON.stringify([]));
-            }
-
-            if (!localStorage.getItem('notifications')) {
-                localStorage.setItem('notifications', JSON.stringify([]));
-            }
-
-            if (!localStorage.getItem('announcements')) {
-                localStorage.setItem('announcements', JSON.stringify([]));
-            }
-
             applyAccessibilitySettings();
         }
 
@@ -1727,9 +1684,10 @@
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             const idProofFile = document.getElementById('idProof').files[0];
+            const admissionDate = document.getElementById('admissionDate').value;
 
             // Validation
-            if (!studentId || !studentEmail || !fullName || !studentDOB || !phone || !parentName || !parentContact || !college || !department || !roomNumber || !password || !confirmPassword || !idProofFile) {
+            if (!studentId || !studentEmail || !fullName || !studentDOB || !phone || !parentName || !parentContact || !college || !department || !roomNumber || !password || !confirmPassword || !idProofFile || !admissionDate) {
                 alert('Please fill all required fields');
                 return;
             }
@@ -1773,10 +1731,10 @@
                     college: college,
                     department: department,
                     roomNumber: roomNumber,
-                    remainingFee: 0,
                     idProof: e.target.result, // Base64 encoded image
                     profilePicture: null,
-                    registeredAt: new Date().toISOString()
+                    registeredAt: new Date().toISOString(),
+                    // admissionAt: new Date().toISOString()
                 };
 
                 users.push(newUser);
@@ -1836,7 +1794,7 @@
                     dob: wardenDOB,
                     idCardImage: e.target.result, // Base64 encoded ID card
                     profilePicture: null,
-                    registeredAt: new Date().toISOString()
+                    // registeredAt: new Date().toISOString()
                 };
 
                 users.push(newWarden);
@@ -1899,6 +1857,7 @@
                     document.getElementById('rulebookTab').classList.add('active');
                 }
                 else if (tabName === 'complaints-manage') { document.getElementById('manageComplaints').classList.add('active'); loadWardenComplaints(); }
+                //  else if (tabName === 'complaints-manage') { document.getElementById('manageComplaints').classList.add('hidden'); loadWardenComplaints(); }
                 else if (tabName === 'leave-manage') { document.getElementById('manageLeaves').classList.add('active'); loadWardenLeaves(); }
                 else if (tabName === 'escort-manage') { document.getElementById('manageEscorts').classList.add('active'); loadWardenEscorts(); }
                 else if (tabName === 'anonymous-manage') { document.getElementById('manageAnonymous').classList.add('active'); loadWardenAnonymous(); }
@@ -1933,7 +1892,7 @@
             if (userRole === 'student') {
                 studentNav.classList.remove('hidden');
                 wardenNav.classList.add('hidden');
-                document.getElementById('appTitle').textContent = '👨‍🎓 Student Dashboard';
+                document.getElementById('appTitle').textContent = '👩🏻‍🎓 Student Dashboard';
                 // Show student registration prompt on login page
                 if (document.getElementById('loginPage').classList.contains('active')) {
                     document.getElementById('registerPromptStudent').style.display = 'block';
@@ -1942,7 +1901,7 @@
             } else if (userRole === 'warden') {
                 wardenNav.classList.remove('hidden');
                 studentNav.classList.add('hidden');
-                document.getElementById('appTitle').textContent = '👨‍💼 Warden Dashboard';
+                document.getElementById('appTitle').textContent = '👩🏻‍💼 Warden Dashboard';
                 // Show warden registration prompt on login page
                 if (document.getElementById('loginPage').classList.contains('active')) {
                     document.getElementById('registerPromptStudent').style.display = 'none';
@@ -1957,7 +1916,6 @@
             updateTranslations();
             updateFontSizeButtons();
             updateThemeButton();
-            renderDashboard();
         }
 
         function updateTranslations() {
@@ -2015,9 +1973,9 @@
         function updateThemeButton() {
             const btn = document.getElementById('themeBtn');
             if (document.body.classList.contains('dark-mode')) {
-                btn.textContent = '☀️ Light';
+                btn.textContent = '☀︎Light☁';
             } else {
-                btn.textContent = '🌙 Dark';
+                btn.textContent = ' ݁˖Dark.✦';
             }
         }
 
@@ -2031,6 +1989,8 @@
             }
             updateThemeButton();
         }
+
+
 
         // ========== COMPLAINTS ==========
         function renderDashboard() {
@@ -2298,8 +2258,87 @@
             }
         }
 
-        function filterComplaints() {
-            loadStudentComplaints();
+        function renderStudentComplaints(complaints) {
+            const list = document.getElementById('complaintsList');
+            if (!list) return;
+
+            if (!Array.isArray(complaints) || complaints.length === 0) {
+                list.innerHTML = '<div class="empty-state"><h3>No complaints found</h3></div>';
+                return;
+            }
+
+            list.innerHTML = complaints.map(c => `
+        <div class="list-item">
+            <div class="list-item-content">
+                <h4>${c.title}</h4>
+                <p>${c.description}</p>
+                <p><strong>Priority:</strong> ${c.priority}</p>
+                <p>
+                    <strong>Status:</strong>
+                    <span class="status-badge status-${c.status.toLowerCase().replace(' ', '-')}">
+                        ${c.status}
+                    </span>
+                </p>
+                <p style="font-size:12px;">
+                    Submitted: ${new Date(c.created_at).toLocaleString()}
+                </p>
+            </div>
+        </div>
+    `).join('');
+        }
+
+
+
+
+        // async function loadStudentComplaints() {
+        //     if (!currentUser) return;
+
+
+        //         const res = await fetch(`${API_BASE}/complaints/${currentUser.id}`);
+        //         const complaints = await res.json();
+
+        //         if (!Array.isArray(complaints) || complaints.length === 0) {
+        //             document.getElementById('complaintsList').innerHTML =
+        //                 '<div class="empty-state"><h3>No complaints found</h3></div>';
+        //             return;
+        //         }
+
+        //         const html = complaints.map(c => `
+        //     <div class="list-item">
+        //         <div class="list-item-content">
+        //             <h4>${c.title}</h4>
+        //             <p>${c.description}</p>
+        //             <p><strong>Priority:</strong> ${c.priority}</p>
+        //             <p>
+        //                 <strong>Status:</strong>
+        //                 <span class="status-badge status-${c.status.toLowerCase().replace(' ', '-')}">
+        //                     ${c.status}
+        //                 </span>
+        //             </p>
+        //             <p style="font-size: 12px;">
+        //                 Submitted: ${new Date(c.created_at).toLocaleString()}
+        //             </p>
+        //         </div>
+        //     </div>
+        // `).join('');
+
+        //         document.getElementById('complaintsList').innerHTML = html;
+
+        //  catch (err) {
+        //     console.error(err);
+        //     alert("Failed to load complaints");
+        // }
+        // }
+        async function filterComplaints() {
+            const filter = document.getElementById('complaintStatusFilter').value;
+            const res = await fetch(`${API_BASE}/complaints/${currentUser.id}`);
+            let complaints = await res.json();
+
+            if (filter) {
+                complaints = complaints.filter(c => c.status === filter);
+            }
+
+            renderStudentComplaints(complaints);
         }
 
         async function loadStudentActivityFeed() {
@@ -2361,31 +2400,36 @@
             }
         }
 
-        function viewComplaintDetail(complaintId) {
+        async function viewComplaintDetail(complaintId) {
+            try {
+                const res = await fetch(`${API_BASE}/complaints/${currentUser.id}`);
+                const complaints = await res.json();
 
-            const complaint = complaints.find(c => c.id === complaintId);
+                const complaint = complaints.find(c => c.id === complaintId);
+                if (!complaint) return;
 
-            if (!complaint) return;
+                const html = `
+            <p><strong>ID:</strong> ${complaint.id}</p>
+            <p><strong>Category:</strong> ${complaint.title}</p>
+            <p><strong>Priority:</strong> ${complaint.priority}</p>
+            <p>
+                <strong>Status:</strong>
+                <span class="status-badge status-${complaint.status.toLowerCase().replace(' ', '-')}">
+                    ${complaint.status}
+                </span>
+            </p>
+            <p><strong>Description:</strong></p>
+            <p>${complaint.description}</p>
+        `;
 
-            let html = `
-                <div class="form-group">
-                    <p><strong>Complaint ID:</strong> ${complaint.id}</p>
-                    <p><strong>Category:</strong> ${complaint.category}</p>
-                    <p><strong>Priority:</strong> ${complaint.priority}</p>
-                    <p><strong>Status:</strong> <span class="status-badge status-${complaint.status.toLowerCase().replace(' ', '-')}">${complaint.status}</span></p>
-                    <p><strong>Description:</strong></p>
-                    <p>${complaint.description}</p>
-            `;
+                document.getElementById('complaintModalContent').innerHTML = html;
+                document.getElementById('complaintModal').classList.add('active');
 
-            if (complaint.image && userRole === 'student') {
-                html += `<p><strong>Attached Image:</strong></p><img src="${complaint.image}" style="max-width: 100%; border-radius: 6px; margin-top: 10px;">`;
+            } catch (err) {
+                console.error("View complaint error:", err);
             }
-
-            html += `</div>`;
-
-            document.getElementById('complaintModalContent').innerHTML = html;
-            document.getElementById('complaintModal').classList.add('active');
         }
+
 
         // ========== LEAVES ==========
         document.getElementById('leaveForm')?.addEventListener('submit', async function (e) {
@@ -2437,148 +2481,136 @@
         async function loadStudentNightOuts() {
             if (!currentUser) return;
 
+            const container = document.getElementById('leaveStatusContent');
+            if (!container) return; // safety guard
+
             try {
                 const res = await fetch(`${API_BASE}/nightout/${currentUser.id}`);
                 const leaves = await res.json();
 
-                if (!leaves.length) {
-                    document.getElementById('leavesList').innerHTML =
+                if (!Array.isArray(leaves) || leaves.length === 0) {
+                    container.innerHTML =
                         '<div class="empty-state"><h3>No night-out requests</h3></div>';
                     return;
                 }
 
-                const html = leaves.map(l => `
-            <div class="list-item">
-                <div class="list-item-content">
-                    <h4>${new Date(l.from_date).toLocaleString()} → ${new Date(l.to_date).toLocaleString()}</h4>
-                    <p>${l.reason}</p>
-                    <p><strong>Status:</strong>
-                        <span class="status-badge status-${l.status.toLowerCase()}">
-                            ${l.status}
-                        </span>
-                    </p>
+                container.innerHTML = `
+            <div class="section-title">Night-out Request Status</div>
+            ${leaves.map(l => `
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <h4>
+                            ${new Date(l.from_date).toLocaleString()}
+                            →
+                            ${new Date(l.to_date).toLocaleString()}
+                        </h4>
+                        <p><strong>Reason:</strong> ${l.reason}</p>
+                        <p>
+                            <strong>Status:</strong>
+                            <span class="status-badge status-${l.status.toLowerCase()}">
+                                ${l.status}
+                            </span>
+                        </p>
+                        <p style="font-size:12px;">
+                            Submitted: ${new Date(l.created_at).toLocaleString()}
+                        </p>
+                    </div>
                 </div>
-            </div>
-        `).join('');
-
-                document.getElementById('leavesList').innerHTML = html;
+            `).join('')}
+        `;
 
             } catch (err) {
-                console.error(err);
-                alert("Failed to load night-out requests");
+                console.error("Night-out load error:", err);
+                container.innerHTML =
+                    '<div class="empty-state"><h3>Failed to load night-out requests</h3></div>';
             }
         }
 
-
-        function approveLeave(leaveId) {
-            const leaves = JSON.parse(localStorage.getItem('leaves')) || [];
-            const leave = leaves.find(l => l.id === leaveId);
-
-            if (!leave) return;
-
-            leave.status = 'Approved';
-            leave.approvedAt = new Date().toISOString();
-            leave.approvedBy = currentUser.id;
-
-            localStorage.setItem('leaves', JSON.stringify(leaves));
-            addNotification('success', 'Leave Approved', `Leave request for ${leave.studentName} has been approved.`);
-            loadWardenLeaves();
-            renderWardenDashboard();
-        }
-
-        function rejectLeave(leaveId) {
-            const leaves = JSON.parse(localStorage.getItem('leaves')) || [];
-            const leave = leaves.find(l => l.id === leaveId);
-
-            if (!leave) return;
-
-            leave.status = 'Rejected';
-            leave.rejectedAt = new Date().toISOString();
-            leave.rejectedBy = currentUser.id;
-
-            localStorage.setItem('leaves', JSON.stringify(leaves));
-            addNotification('error', 'Leave Rejected', `Leave request for ${leave.studentName} has been rejected.`);
-            loadWardenLeaves();
-            renderWardenDashboard();
-        }
 
         function filterWardenLeaves() {
             loadWardenLeaves();
         }
 
         // ========== ANONYMOUS REPORTS ==========
+        // ========== ANONYMOUS REPORTS (BACKEND CONNECTED) ==========
+
         function showAnonTooltip() {
             const tooltip = document.getElementById('anonTooltip');
             tooltip.style.display = tooltip.style.display === 'none' ? 'block' : 'none';
         }
 
-        document.getElementById('anonForm')?.addEventListener('submit', function (e) {
+        /* ================= STUDENT: SUBMIT ANONYMOUS REPORT ================= */
+        document.getElementById('anonForm')?.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const type = document.getElementById('anonType').value;
             const description = document.getElementById('anonDescription').value;
-            const evidenceFiles = document.getElementById('anonEvidenceFiles')?.files || [];
+            const files = document.getElementById('anonEvidenceFiles')?.files || [];
 
             if (!type || !description) {
                 alert('Please fill all fields');
                 return;
             }
 
-            const reports = JSON.parse(localStorage.getItem('anonymousReports')) || [];
+            let imgBase64 = null;
 
-            // Process evidence files
-            let evidenceArray = [];
-            let filesProcessed = 0;
+            if (files.length > 0) {
+                const file = files[0];
 
-            const processFiles = () => {
-                if (filesProcessed === evidenceFiles.length) {
-                    // All files processed, create report
-                    const report = {
-                        id: 'ANON' + Date.now(),
-                        type: type,
-                        description: description,
-                        evidence: evidenceArray, // Array of Base64 images
-                        // NO student ID stored - completely anonymous
-                        createdAt: new Date().toISOString(),
-                        status: 'Submitted'
-                    };
-
-                    reports.push(report);
-                    localStorage.setItem('anonymousReports', JSON.stringify(reports));
-
-                    addNotification('success', 'Anonymous Report Submitted', 'Your report has been submitted safely.');
-                    document.getElementById('anonForm').reset();
-                    document.getElementById('anonEvidencePreview').innerHTML = '';
-                    alert('Anonymous report submitted successfully. Your identity is protected.');
+                if (file.size > 5 * 1024 * 1024) {
+                    alert("Evidence image too large (max 5MB)");
+                    return;
                 }
-            };
 
-            if (evidenceFiles.length === 0) {
-                processFiles();
+                const reader = new FileReader();
+                reader.onload = async function () {
+                    imgBase64 = reader.result;
+                    await submitAnonymousReport(type, description, imgBase64);
+                };
+                reader.readAsDataURL(file);
             } else {
-                Array.from(evidenceFiles).forEach((file, index) => {
-                    if (file.size > 5 * 1024 * 1024) {
-                        alert(`Evidence file ${index + 1} is too large (max 5MB)`);
-                        return;
-                    }
-
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        evidenceArray.push(e.target.result);
-                        filesProcessed++;
-                        processFiles();
-                    };
-                    reader.readAsDataURL(file);
-                });
+                await submitAnonymousReport(type, description, null);
             }
         });
 
-        // Add event listener for evidence file preview
+        async function submitAnonymousReport(type, description, img) {
+            try {
+                const res = await fetch(`${API_BASE}/anonymous`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        report_type: type,
+                        description: description,
+                        img: img
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || "Submission failed");
+
+                addNotification(
+                    'success',
+                    'Anonymous Report Submitted',
+                    'Your report has been submitted safely.'
+                );
+
+                document.getElementById('anonForm').reset();
+                document.getElementById('anonEvidencePreview').innerHTML = '';
+
+                alert('Anonymous report submitted successfully.');
+
+            } catch (err) {
+                console.error("❌ Anonymous submit error:", err);
+                alert("submitted");
+            }
+        }
+
+        /* ================= IMAGE PREVIEW (UNCHANGED UI) ================= */
         document.getElementById('anonEvidenceFiles')?.addEventListener('change', function (e) {
             const preview = document.getElementById('anonEvidencePreview');
             preview.innerHTML = '';
 
-            Array.from(e.target.files).forEach((file, index) => {
+            Array.from(e.target.files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function (evt) {
                     const img = document.createElement('img');
@@ -2593,60 +2625,119 @@
             });
         });
 
-        function loadWardenAnonymous() {
-            const reports = JSON.parse(localStorage.getItem('anonymousReports')) || [];
+        /* ================= WARDEN: LOAD ANONYMOUS REPORTS ================= */
+        async function loadWardenAnonymous() {
+            try {
+                const res = await fetch(`${API_BASE}/anonymous`);
+                const reports = await res.json();
 
-            if (reports.length === 0) {
-                document.getElementById('wardenAnonymousList').innerHTML = '<div class="empty-state"><h3>No anonymous reports</h3></div>';
-                return;
-            }
+                if (!Array.isArray(reports) || reports.length === 0) {
+                    document.getElementById('wardenAnonymousList').innerHTML =
+                        '<div class="empty-state"><h3>No anonymous reports</h3></div>';
+                    return;
+                }
 
-            const html = reports.map(report => `
-                <div class="list-item">
-                    <div class="list-item-content">
-                        <h4>Anonymous Report - ${report.id}</h4>
-                        <p><strong>Type:</strong> ${report.type}</p>
-                        <p>${report.description.substring(0, 150)}...</p>
-                        ${report.evidence && report.evidence.length > 0 ? `<p><strong>Evidence:</strong> ${report.evidence.length} file(s) attached</p>` : ''}
-                        <p style="font-size: 12px;">Submitted: ${new Date(report.createdAt).toLocaleString()}</p>
-                    </div>
-                    <div class="list-item-actions">
-                        <button class="btn-sm btn-primary" onclick="viewAnonReport('${report.id}')">View Details</button>
-                    </div>
+                const html = reports.map(r => `
+            <div class="list-item">
+                <div class="list-item-content">
+                    <h4>Anonymous Report #${r.id}</h4>
+                    <p><strong>Type:</strong> ${r.report_type}</p>
+                    <p>${r.description.substring(0, 150)}...</p>
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="status-badge status-${r.status.toLowerCase().replace(' ', '-')}">
+                            ${r.status}
+                        </span>
+                    </p>
+                    <p style="font-size: 12px;">
+                        Submitted: ${new Date(r.created_at).toLocaleString()}
+                    </p>
                 </div>
-            `).join('');
+                <div class="list-item-actions">
+                    <button class="btn-sm btn-primary"
+                        onclick="viewAnonReport(${r.id})">View</button>
 
-            document.getElementById('wardenAnonymousList').innerHTML = html;
+                    <button class="btn-sm btn-warning"
+                        onclick="updateAnonStatus(${r.id}, 'In Review')">In Review</button>
+
+                    <button class="btn-sm btn-success"
+                        onclick="updateAnonStatus(${r.id}, 'Closed')">Close</button>
+                </div>
+            </div>
+        `).join('');
+
+                document.getElementById('wardenAnonymousList').innerHTML = html;
+
+            } catch (err) {
+                console.error("❌ Load anonymous reports error:", err);
+                alert("Failed to load anonymous reports");
+            }
         }
 
-        function viewAnonReport(reportId) {
-            const reports = JSON.parse(localStorage.getItem('anonymousReports')) || [];
-            const report = reports.find(r => r.id === reportId);
+        /* ================= WARDEN: VIEW FULL REPORT ================= */
+        async function viewAnonReport(reportId) {
+            try {
+                const res = await fetch(`${API_BASE}/anonymous`);
+                const reports = await res.json();
+                const report = reports.find(r => r.id === reportId);
 
-            if (!report) return;
+                if (!report) return;
 
-            let html = `
-                <div class="form-group">
-                    <p><strong>Report ID:</strong> ${report.id}</p>
-                    <p><strong>Type:</strong> ${report.type}</p>
-                    <p><strong>Status:</strong> <span class="status-badge status-submitted">${report.status}</span></p>
-                    <p><strong>Submitted:</strong> ${new Date(report.createdAt).toLocaleString()}</p>
-                    <p><strong>Description:</strong></p>
-                    <p style="background-color: var(--light-bg); padding: 10px; border-radius: 6px; border-left: 4px solid var(--warning-color);">${report.description}</p>
+                let html = `
+            <div class="form-group">
+                <p><strong>Report ID:</strong> ${report.id}</p>
+                <p><strong>Type:</strong> ${report.report_type}</p>
+                <p><strong>Status:</strong>
+                    <span class="status-badge status-${report.status.toLowerCase().replace(' ', '-')}">
+                        ${report.status}
+                    </span>
+                </p>
+                <p><strong>Submitted:</strong>
+                    ${new Date(report.created_at).toLocaleString()}
+                </p>
+                <p><strong>Description:</strong></p>
+                <p style="background-color: var(--light-bg); padding: 10px; border-radius: 6px;">
+                    ${report.description}
+                </p>
+        `;
+
+                if (report.img) {
+                    html += `
+                <p><strong>Evidence:</strong></p>
+                <img src="${report.img}"
+                     style="max-width: 100%; border-radius: 6px; margin-top: 10px;">
             `;
+                }
 
-            if (report.evidence && report.evidence.length > 0) {
-                html += `<p><strong>Evidence:</strong></p><div style="display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0;">`;
-                report.evidence.forEach((img, idx) => {
-                    html += `<img src="${img}" style="max-width: 150px; max-height: 150px; border-radius: 6px; border: 1px solid var(--border-color);">`;
-                });
                 html += `</div>`;
+
+                document.getElementById('complaintModalContent').innerHTML = html;
+                document.getElementById('complaintModal').classList.add('active');
+
+            } catch (err) {
+                console.error("❌ View anonymous report error:", err);
             }
+        }
 
-            html += `</div>`;
+        /* ================= WARDEN: UPDATE STATUS ================= */
+        async function updateAnonStatus(id, status) {
+            try {
+                const res = await fetch(`${API_BASE}/anonymous/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status })
+                });
 
-            document.getElementById('complaintModalContent').innerHTML = html;
-            document.getElementById('complaintModal').classList.add('active');
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error);
+
+                alert("Status updated successfully");
+                loadWardenAnonymous();
+
+            } catch (err) {
+                console.error("❌ Update status error:", err);
+                alert("Failed to update report status");
+            }
         }
 
         // ========== ESCORT REQUESTS ==========
@@ -2851,11 +2942,16 @@
                 <div>
                     <p><strong>Parent Name:</strong> ${user.parentName}</p>
                     <p><strong>Parent Contact:</strong> ${user.parentContact}</p>
-                    <p><strong>Registration Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
+                    
+                     <p><strong>Admission Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
+                   
                 </div>
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color);">
                 ${idProofHtml}
             `;
+
+            // <p><strong>Registration Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
+            //  <p><strong>Admission Date:</strong> ${new Date(user.admissionAt).toLocaleString()}</p>
 
             document.getElementById('studentProfileContent').innerHTML = html;
 
@@ -2902,7 +2998,6 @@
                         <p><strong>Email:</strong> ${user.email}</p>
                         <p><strong>Date of Birth:</strong> ${user.dob ? new Date(user.dob).toLocaleDateString() : 'N/A'}</p>
                         <p><strong>Phone:</strong> ${user.phone}</p>
-                        <p><strong>Registration Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
                     </div>
                 </div>
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color);">
@@ -3082,10 +3177,7 @@
                     <p>${c.description.substring(0, 100)}...</p>
                 </div>
                 <div class="list-item-actions">
-                     <button class="btn-sm btn-primary"
-    onclick="updateComplaintStatus('${c.id}', 'In Progress')">
-    In Progress
-</button>
+
 <button class="btn-sm btn-success"
     onclick="updateComplaintStatus('${c.id}', 'Resolved')">
     Resolve
@@ -3103,6 +3195,31 @@
                 console.error(err);
                 alert("Failed to load complaints");
             }
+        }
+        function normalizeStatus(status) {
+            return status.toLowerCase().replace(/\s+/g, '-');
+        }
+        function addNotification(type, title, message) {
+            const container = document.getElementById("notificationsContainer");
+            if (!container) return;
+
+            const notif = document.createElement("div");
+            notif.className = `notification ${type}`;
+
+            notif.innerHTML = `
+        <div class="notification-content">
+            <h4>${title}</h4>
+            <p>${message}</p>
+        </div>
+        <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>
+    `;
+
+            container.prepend(notif);
+
+            // auto-remove after 5 seconds
+            setTimeout(() => {
+                notif.remove();
+            }, 5000);
         }
 
         async function updateComplaintStatus(complaintId, newStatus) {
@@ -3131,7 +3248,6 @@
                 // 🔄 Refresh everything that depends on complaints
                 loadWardenComplaints();
                 renderWardenDashboard();
-                loadStudentComplaints();
 
             } catch (err) {
                 console.error(err);
@@ -3157,242 +3273,172 @@
         }
 
         // ========== ANNOUNCEMENTS ==========
-        document.getElementById('announcementForm')?.addEventListener('submit', function (e) {
+        // ========== ANNOUNCEMENTS (FINAL, STRICT-CORS SAFE) ==========
+
+        // POST ANNOUNCEMENT (WARDEN)
+        document.getElementById("announcementForm")?.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            const title = document.getElementById('announcementTitle').value;
-            const text = document.getElementById('announcementText').value;
+            const titleEl = document.getElementById("announcementTitle");
+            const contentEl = document.getElementById("announcementText");
 
-            if (!title || !text) {
-                alert('Please fill all fields');
+            const title = titleEl.value.trim();
+            const content = contentEl.value.trim();
+
+            if (!title || !content) {
+                alert("Please fill all fields");
                 return;
             }
 
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
-
-            const announcement = {
-                id: 'ANN' + Date.now(),
-                title: title,
-                text: text,
-                postedBy: currentUser.name,
-                postedAt: new Date().toISOString()
-            };
-
-            announcements.push(announcement);
-            localStorage.setItem('announcements', JSON.stringify(announcements));
-
-            document.getElementById('announcementForm').reset();
-            loadAnnouncements();
-            alert('Announcement posted successfully.');
-        });
-
-        function loadAnnouncements() {
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
-
-            if (announcements.length === 0) {
-                document.getElementById('announcementsList').innerHTML = '<div class="empty-state"><h3>No announcements yet</h3></div>';
-                return;
-            }
-
-            const html = announcements.reverse().map(ann => `
-                <div class="notification info">
-                    <div class="notification-content">
-                        <h4>${ann.title}</h4>
-                        <p>${ann.text}</p>
-                        <p style="font-size: 12px; margin-top: 10px;">Posted by ${ann.postedBy} on ${new Date(ann.postedAt).toLocaleString()}</p>
-                    </div>
-                </div>
-            `).join('');
-
-            document.getElementById('announcementsList').innerHTML = html;
-        }
-
-        function loadAnnouncementsPreview() {
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
-
-            if (announcements.length === 0) {
-                document.getElementById('announcementsPreview').innerHTML = '<div class="empty-state"><p>No announcements</p></div>';
-                return;
-            }
-
-            // Show only the latest single announcement (no truncation on preview)
-            const latestAnn = announcements[announcements.length - 1];
-            const html = `
-                <div class="notification info" style="margin-bottom: 10px;">
-                    <div class="notification-content">
-                        <h4>${latestAnn.title}</h4>
-                        <p style="font-size: 13px;">${latestAnn.text}</p>
-                        <p style="font-size: 12px; margin-top: 8px;">Posted on ${new Date(latestAnn.postedAt).toLocaleString()}</p>
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('announcementsPreview').innerHTML = html;
-        }
-
-        function loadAllAnnouncements() {
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
-
-            if (announcements.length === 0) {
-                document.getElementById('announcementsFullList').innerHTML = '<div class="empty-state"><h3>No announcements yet</h3></div>';
-                return;
-            }
-
-            const html = announcements.reverse().map(ann => `
-                <div class="notification info">
-                    <div class="notification-content">
-                        <h4>${ann.title}</h4>
-                        <p>${ann.text}</p>
-                        <p style="font-size: 12px; margin-top: 10px;">Posted on ${new Date(ann.postedAt).toLocaleString()}</p>
-                    </div>
-                </div>
-            `).join('');
-
-            document.getElementById('announcementsFullList').innerHTML = html;
-        }
-
-        // Load latest announcement for warden dashboard preview
-        function loadWardenAnnouncementsPreview() {
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
-
-            if (announcements.length === 0) {
-                document.getElementById('wardenAnnouncementsPreview').innerHTML = '<div class="empty-state"><p>No announcements</p></div>';
-                return;
-            }
-
-            // Show only the latest single announcement (no truncation)
-            const latestAnn = announcements[announcements.length - 1];
-            const html = `
-                <div class="notification info" style="margin-bottom: 10px;">
-                    <div class="notification-content">
-                        <h4>${latestAnn.title}</h4>
-                        <p style="font-size: 13px;">${latestAnn.text}</p>
-                        <p style="font-size: 12px; margin-top: 8px;">Posted on ${new Date(latestAnn.postedAt).toLocaleString()}</p>
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('wardenAnnouncementsPreview').innerHTML = html;
-        }
-
-        // ========== NOTIFICATIONS ==========
-        function addNotification(type, title, message) {
-            const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-
-            const notification = {
-                id: 'NOTIF' + Date.now(),
-                type: type,
-                title: title,
-                message: message,
-                createdAt: new Date().toISOString(),
-                read: false
-            };
-
-            notifications.push(notification);
-            localStorage.setItem('notifications', JSON.stringify(notifications));
-
-            renderNotifications();
-        }
-
-        function renderNotifications() {
-            const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-            const recentNotifications = notifications.slice(-5);
-
-            if (recentNotifications.length === 0) {
-                document.getElementById('notificationsContainer').innerHTML = '';
-                return;
-            }
-
-            const html = recentNotifications.map(notif => `
-                <div class="notification ${notif.type}">
-                    <div class="notification-content">
-                        <h4>${notif.title}</h4>
-                        <p>${notif.message}</p>
-                    </div>
-                    <button class="close-btn" onclick="removeNotification('${notif.id}')">&times;</button>
-                </div>
-            `).join('');
-
-            document.getElementById('notificationsContainer').innerHTML = html;
-        }
-
-        function removeNotification(notifId) {
-            const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-            const filtered = notifications.filter(n => n.id !== notifId);
-            localStorage.setItem('notifications', JSON.stringify(filtered));
-            renderNotifications();
-        }
-
-        // ========== MODAL FUNCTIONS ==========
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // ========== INITIALIZATION ==========
-        window.addEventListener('load', function () {
-            initializeApp();
-            seedAnnouncementsIfEmpty();
-            applyAccessibilitySettings();
-            updateUI();
-
-            // Update register prompt visibility on login page
-            if (document.getElementById('loginPage').classList.contains('active')) {
-                if (userRole === 'student') {
-                    document.getElementById('registerPromptStudent').style.display = 'block';
-                    document.getElementById('registerPromptWarden').style.display = 'none';
-                } else if (userRole === 'warden') {
-                    document.getElementById('registerPromptStudent').style.display = 'none';
-                    document.getElementById('registerPromptWarden').style.display = 'block';
-                }
-            }
-        });
-
-        // Seed demo announcements if empty
-        function seedAnnouncementsIfEmpty() {
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
-            if (announcements.length === 0) {
-                const demoAnnouncements = [
-                    {
-                        id: 'ANN1001',
-                        title: 'Welcome to Digital Hostel Management',
-                        text: 'We are excited to launch our new digital hostel management system. This system will help streamline complaints, leave requests, and hostel operations.',
-                        postedBy: 'Mr. Rajesh Kumar',
-                        postedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
-                    },
-                    {
-                        id: 'ANN1002',
-                        title: 'Maintenance Schedule - Water Tank Cleaning',
-                        text: 'The water tank cleaning will be done on Saturday from 10 AM to 2 PM. Students are advised to collect drinking water in advance.',
-                        postedBy: 'Mr. Rajesh Kumar',
-                        postedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
-                    },
-                    {
-                        id: 'ANN1003',
-                        title: 'New Guest Room Booking Policy',
-                        text: 'Effective from next month, guest room bookings must be made 48 hours in advance through the hostel management portal. A deposit of ₹500 is required.',
-                        postedBy: 'Mr. Rajesh Kumar',
-                        postedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
-                    }
-                ];
-                localStorage.setItem('announcements', JSON.stringify(demoAnnouncements));
-            }
-        }
-
-        // Ensure localStorage is available
-        function checkLocalStorageSupport() {
             try {
-                localStorage.setItem('test', 'test');
-                localStorage.removeItem('test');
-                return true;
-            } catch (e) {
-                alert('localStorage is not available. The application requires localStorage to function.');
-                return false;
+                const res = await fetch(`${API_BASE}/announcements`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        title,
+                        content,
+                        posted_by: "warden" // name/id DOES NOT MATTER
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    console.error("Backend error:", data);
+                    alert(data.error || "Failed to post announcement");
+                    return;
+                }
+
+                alert("Announcement posted successfully");
+                e.target.reset();
+
+                loadAnnouncements();
+                loadWardenAnnouncementsPreview();
+                loadAnnouncementsPreview();
+
+            } catch (err) {
+                console.error("POST announcement failed:", err);
+                alert("Network/backend error");
+            }
+        });
+
+
+
+        // LOAD ANNOUNCEMENTS (WARDEN)
+        async function loadAnnouncements() {
+            try {
+                const res = await fetch(`${API_BASE}/announcements`);
+                const announcements = await res.json();
+
+                if (!announcements.length) {
+                    announcementsList.innerHTML =
+                        `<div class="empty-state"><h3>No announcements yet</h3></div>`;
+                    return;
+                }
+
+                announcementsList.innerHTML = announcements.map(a => `
+            <div class="notification info">
+                <div class="notification-content">
+                    <h4>${a.title}</h4>
+                    <p>${a.content}</p>
+                    <p style="font-size:12px;">
+                        Posted by ${a.posted_by} ·
+                        ${new Date(a.created_at).toLocaleString()}
+                    </p>
+                </div>
+            </div>
+        `).join("");
+
+            } catch (err) {
+                console.error(err);
+                alert("Failed to load announcements");
             }
         }
 
-        if (!checkLocalStorageSupport()) {
-            document.body.innerHTML = '<div style="padding: 40px; text-align: center; color: red;"><h1>Error</h1><p>This browser does not support localStorage. Please use a different browser.</p></div>';
+
+        // STUDENT PREVIEW
+        async function loadAnnouncementsPreview() {
+            try {
+                const res = await fetch(`${API_BASE}/announcements`);
+                const data = await res.json();
+
+                if (!data.length) {
+                    announcementsPreview.innerHTML =
+                        `<div class="empty-state">No announcements</div>`;
+                    return;
+                }
+
+                const sorted = data.slice().reverse();
+                const latest = sorted[0];
+
+
+                announcementsPreview.innerHTML = `
+            <div class="notification info">
+                <div class="notification-content">
+                    <h4>${latest.title}</h4>
+                    <p>${latest.content}</p>
+                </div>
+            </div>
+        `;
+            } catch (err) {
+                console.error(err);
+            }
         }
+
+
+        // STUDENT VIEW ALL
+        async function loadAllAnnouncements() {
+            try {
+                const res = await fetch(`${API_BASE}/announcements`);
+                const data = await res.json();
+
+                announcementsFullList.innerHTML = data.length === 0
+                    ? `<div class="empty-state"><h3>No announcements</h3></div>`
+                    : data.map(a => `
+                <div class="notification info">
+                    <div class="notification-content">
+                        <h4>${a.title}</h4>
+                        <p>${a.content}</p>
+                        <p style="font-size:12px;">
+                            ${new Date(a.created_at).toLocaleString()}
+                        </p>
+                    </div>
+                </div>
+            `).join("");
+
+            } catch (err) {
+                console.error(err);
+                alert("Failed to load announcements");
+            }
+        }
+
+
+        // WARDEN DASHBOARD PREVIEW
+        async function loadWardenAnnouncementsPreview() {
+            const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
+            const data = await res.json();
+            if (!data.length) return;
+
+            const a = data[0];
+            document.getElementById("wardenAnnouncementsPreview").innerHTML = `
+    <div class="notification info">
+      <div class="notification-content">
+        <h4>${a.title}</h4>
+        <p>${a.content}</p>
+      </div>
+    </div>
+  `;
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+
+            modal.classList.remove('active');
+        }
+
+
+
     </script>
 </body>
 
