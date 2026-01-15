@@ -86,11 +86,11 @@ Preferably please use int type for ids.
 ## ✦ Deployment Architecture  
 
 User Browser
-↓
+
 Firebase Hosting (Frontend)
-↓
+
 Railway Backend (Node + Express)
-↓
+
 MySQL Database
 
 
@@ -172,3 +172,4 @@ firebase deploy
 ⋆ `GET /announcements`  
 
 . ݁₊ ⊹ . ݁˖ . ݁
+
