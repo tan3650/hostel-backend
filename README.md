@@ -18,7 +18,7 @@ Preferably please use int type for ids.
 <img src="https://img.shields.io/badge/Backend-Railway-6A5ACD?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Database-MySQL-8A2BE2?style=for-the-badge" />
 </p>
-<img width="480" height="234" alt="Screenshot (860)" src="https://github.com/user-attachments/assets/79ed6596-78b5-4606-b440-23a4e7f70711" />     <img width="480" height="234" alt="Screenshot (862)" src="https://github.com/user-attachments/assets/ada95bb6-1722-4891-98ae-20763c33e70f" />
+<img width="240" height="121" alt="Screenshot (860)" src="https://github.com/user-attachments/assets/79ed6596-78b5-4606-b440-23a4e7f70711" />     <img width="240" height="121" alt="Screenshot (862)" src="https://github.com/user-attachments/assets/ada95bb6-1722-4891-98ae-20763c33e70f" />
 
 
 ---
