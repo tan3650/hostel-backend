@@ -481,7 +481,10 @@
             margin-bottom: 20px;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow); 
+    position: sticky;
+    top: 110px; /* adjust to your header height */
+    z-index: 1000;
         }
 
         nav ul {
@@ -873,19 +876,18 @@
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number *</label>
-                        <input type="text" id="phone" required>
+                        <input type="tel" id="phone" pattern="[0-9]+" required>
                     </div>
                     <div class="form-group">
                         <label for="parentName">Parent Name *</label>
                         <input type="text" id="parentName" required>
                     </div>
                     <div class="form-group">
-                        <label for="parentContact">Parent Contact (Numeric) *</label>
+                        <label for="parentContact">Parent Contact *</label>
                         <input type="tel" id="parentContact" pattern="[0-9]+" required>
                     </div>
                     <div class="form-group">
                         <label for="college">College Name *</label>
-                        <!-- <label for="College Name">College Name *</label> -->
                         <input type="text" id="college" required>
                     </div>
                     <div class="form-group">
@@ -897,8 +899,8 @@
                         <input type="text" id="roomNumber" required>
                     </div>
                     <div class="form-group">
-                        <label for="remainingFee">Remaining Fee (₹) *</label>
-                        <input type="number" id="remainingFee" min="0" required>
+                        <label for="admissionDate">Admission Date *</label>
+                        <input type="date" id="admissionDate" required>
                     </div>
                     <div class="form-group">
                         <label for="idProof">ID Card/Fee Receipt Photo *</label>
@@ -914,9 +916,7 @@
                     </div>
                     <div style="grid-column: 1/-1; display: flex; gap: 10px;">
                         <button class="btn-success" onclick="handleStudentRegister()" style="flex: 1;">Register</button>
-                        <!-- <button class="btn-secondary" onclick="backToLogin()" style="flex: 1;">Back to Login</button> -->
-                        <button class="btn-secondary" onclick="goBackToRole()" style="width: 50%;">Back to
-                            Login</button>
+                        <button class="btn-secondary" onclick="goBackToRole()" style="width: 50%;">Back to Login</button>
                     </div>
                 </div>
             </div>
@@ -945,7 +945,7 @@
                     </div>
                     <div class="form-group">
                         <label for="wardenPhone">Phone Number *</label>
-                        <input type="text" id="wardenPhone" required>
+                        <input type="tel" id="wardenPhone" pattern="[0-9]+" required>
                     </div>
                     <div class="form-group">
                         <label for="wardenDOB">Date of Birth *</label>
@@ -1010,9 +1010,6 @@
                     <li><button class="nav-btn" onclick="switchTab('dashboard')"
                             data-label="dashboard">Dashboard</button></li>
                     <li><button class="nav-btn" onclick="switchTab('profile')" data-label="profile">Profile</button>
-                    <li>
-                        <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button>
-                    </li>
                     </li>
                     <li><button class="nav-btn" onclick="switchTab('status')" data-label="status">Status</button></li>
                     <li><button class="nav-btn" onclick="switchTab('complaint')" data-label="complaint">Register
@@ -1025,11 +1022,14 @@
                             Request</button></li>
                     <li><button class="nav-btn" onclick="switchTab('anonymous')" data-label="anonymous">Anonymous
                             Report</button></li>
+                    <li>
+                        <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button>
+                    </li>        
                 </ul>
             </nav>
 
             <!-- Warden Navigation -->
-            <!-- <nav id="wardenNav" class="hidden">
+            <nav id="wardenNav" class="hidden">
                 <ul>
                     <li><button class="nav-btn" onclick="switchTab('dashboard')" data-label="dashboard">Dashboard</button></li>
                     <li><button class="nav-btn" onclick="switchTab('warden-profile')" data-label="profile">Profile</button></li>
@@ -1038,8 +1038,9 @@
                     <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort Requests</button></li>
                     <li><button class="nav-btn" onclick="switchTab('anonymous-manage')" data-label="anonymous_manage">Anonymous Reports</button></li>
                     <li><button class="nav-btn" onclick="switchTab('announcements')" data-label="announcements">Announcements</button></li>
+                    <li> <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button></li> 
                 </ul>
-            </nav> -->
+            </nav>
 
             <!-- Student Dashboard -->
             <div id="studentDashboard" class="tab-content active">
@@ -1065,16 +1066,6 @@
                 <div id="recentActivityList"></div>
             </div>
 
-            <!-- Warden Dashboard -->
-            <!-- <div id="wardenDashboard" class="tab-content">
-                <div class="dashboard-grid" id="wardenDashboardCards"></div>
-                <div class="section-title" style="margin-top: 30px;">📢 Announcements</div>
-                <div id="wardenAnnouncementsPreview"></div>
-                <button class="btn-primary" onclick="switchTab('announcements')" style="margin-bottom: 20px;">View All Announcements</button>
-                <div class="section-title">📋 Recent Activities</div>
-                <div id="wardenRecentActivities"></div>
-            </div> -->
-
             <!-- Student Profile -->
             <div id="studentProfile" class="tab-content hidden">
                 <div class="section-title" data-label="profile_info">Profile Information</div>
@@ -1091,41 +1082,41 @@
                 </p>
 
                 <div class="card" style="white-space: pre-line; line-height: 1.7;">
-                    A. Curfew & Attendance
+                    <b>A. Curfew & Attendance</b>
                     • Weekday curfew: 21:00 (9:00 PM)
                     • Weekend curfew: 21:30 (9:30 PM)
                     • Daily attendance at ground floor is mandatory
                     • Late return fine: ₹100 per hour
 
-                    B. Leave & Permissions
+                    </b>B. Leave & Permissions</b>
                     • All night-out requests must be submitted via system
                     • Parent contact required
                     • Approval is warden’s discretion
 
-                    C. Conduct & Safety
+                    </b>C. Conduct & Safety</b>
                     • No loud music or violence
                     • Drugs, alcohol, smoking prohibited
                     • Sharp objects prohibited
 
-                    D. Fire & Festivals
+                    <b>D. Fire & Festivals</b>
                     • Firecrackers prohibited
                     • Unsafe celebrations banned
 
-                    E. Appliances & Food
+                    <b>E. Appliances & Food</b>
                     • Only permitted appliances
                     • Kitchen closed after 12 AM
                     • No food delivery after 11:30 PM
 
-                    F. Property & Fees
+                    <b>F. Property & Fees</b>
                     • Damage fine: ₹5,000 or actual cost
                     • Late fee penalties apply
 
-                    G. Miscellaneous
+                    <b>G. Miscellaneous</b>
                     • Hostel not responsible for belongings
                     • Gates open at 6:00 AM
                     • Room allocation by authority
 
-                    H. Enforcement
+                    <b>H. Enforcement</b>
                     • Violations may lead to fines or eviction
                     • Rules may be updated anytime
                 </div>
@@ -1305,36 +1296,6 @@
                 <div id="announcementsFullList"></div>
             </div>
 
-            <!-- Warden Navigation -->
-            <nav id="wardenNav" class="hidden">
-                <ul>
-                    <li><button class="nav-btn" onclick="switchTab('dashboard')"
-                            data-label="dashboard">Dashboard</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('warden-profile')"
-                            data-label="profile">Profile</button></li>
-                    <!-- <li><button class="nav-btn" onclick="switchTab('dashboard')"
-                            data-label="dashboard">Dashboard</button></li> -->
-                    <!-- <button class="nav-btn" onclick="switchTab('warden-profile')"
-                            data-label="profile">Profile</button></li> -->
-                    <li><button class="nav-btn" onclick="switchTab('complaints-manage')"
-                            data-label="complaints_manage">Manage Complaints</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('leave-manage')" data-label="leave_manage">Approve
-                            Leaves</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort
-                            Requests</button></li>
-                    <!-- <li><button class="nav-btn" onclick="switchTab('complaints-manage')"
-                            data-label="complaints_manage">Manage Complaints</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('leave-manage')" data-label="leave_manage">Approve
-                            Leaves</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort
-                            Requests</button></li> -->
-                    <li><button class="nav-btn" onclick="switchTab('anonymous-manage')"
-                            data-label="anonymous_manage">Anonymous Reports</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('announcements')"
-                            data-label="announcements">Announcements</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('rulebook')" data-label="rulebook"> Rule Book</button> </li>
-                </ul>
-            </nav>
 
             <!-- Warden Dashboard -->
             <div id="wardenDashboard" class="tab-content">
@@ -1727,9 +1688,10 @@
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             const idProofFile = document.getElementById('idProof').files[0];
+            const admissionDate = document.getElementById('admissionDate').value;
 
             // Validation
-            if (!studentId || !studentEmail || !fullName || !studentDOB || !phone || !parentName || !parentContact || !college || !department || !roomNumber || !password || !confirmPassword || !idProofFile) {
+            if (!studentId || !studentEmail || !fullName || !studentDOB || !phone || !parentName || !parentContact || !college || !department || !roomNumber || !password || !confirmPassword || !idProofFile ||!admissionDate) {
                 alert('Please fill all required fields');
                 return;
             }
@@ -1773,10 +1735,10 @@
                     college: college,
                     department: department,
                     roomNumber: roomNumber,
-                    remainingFee: 0,
                     idProof: e.target.result, // Base64 encoded image
                     profilePicture: null,
-                    registeredAt: new Date().toISOString()
+                    registeredAt: new Date().toISOString(),
+                    // admissionAt: new Date().toISOString()
                 };
 
                 users.push(newUser);
@@ -1836,7 +1798,7 @@
                     dob: wardenDOB,
                     idCardImage: e.target.result, // Base64 encoded ID card
                     profilePicture: null,
-                    registeredAt: new Date().toISOString()
+                    // registeredAt: new Date().toISOString()
                 };
 
                 users.push(newWarden);
@@ -1899,6 +1861,7 @@
                     document.getElementById('rulebookTab').classList.add('active');
                 }
                 else if (tabName === 'complaints-manage') { document.getElementById('manageComplaints').classList.add('active'); loadWardenComplaints(); }
+                //  else if (tabName === 'complaints-manage') { document.getElementById('manageComplaints').classList.add('hidden'); loadWardenComplaints(); }
                 else if (tabName === 'leave-manage') { document.getElementById('manageLeaves').classList.add('active'); loadWardenLeaves(); }
                 else if (tabName === 'escort-manage') { document.getElementById('manageEscorts').classList.add('active'); loadWardenEscorts(); }
                 else if (tabName === 'anonymous-manage') { document.getElementById('manageAnonymous').classList.add('active'); loadWardenAnonymous(); }
@@ -2297,6 +2260,48 @@
                 alert("Failed to load complaints");
             }
         }
+
+
+
+        // async function loadStudentComplaints() {
+        //     if (!currentUser) return;
+
+        
+        //         const res = await fetch(`${API_BASE}/complaints/${currentUser.id}`);
+        //         const complaints = await res.json();
+
+        //         if (!Array.isArray(complaints) || complaints.length === 0) {
+        //             document.getElementById('complaintsList').innerHTML =
+        //                 '<div class="empty-state"><h3>No complaints found</h3></div>';
+        //             return;
+        //         }
+
+        //         const html = complaints.map(c => `
+        //     <div class="list-item">
+        //         <div class="list-item-content">
+        //             <h4>${c.title}</h4>
+        //             <p>${c.description}</p>
+        //             <p><strong>Priority:</strong> ${c.priority}</p>
+        //             <p>
+        //                 <strong>Status:</strong>
+        //                 <span class="status-badge status-${c.status.toLowerCase().replace(' ', '-')}">
+        //                     ${c.status}
+        //                 </span>
+        //             </p>
+        //             <p style="font-size: 12px;">
+        //                 Submitted: ${new Date(c.created_at).toLocaleString()}
+        //             </p>
+        //         </div>
+        //     </div>
+        // `).join('');
+
+        //         document.getElementById('complaintsList').innerHTML = html;
+
+            //  catch (err) {
+            //     console.error(err);
+            //     alert("Failed to load complaints");
+            // }
+        // }
 
         function filterComplaints() {
             loadStudentComplaints();
@@ -2851,11 +2856,16 @@
                 <div>
                     <p><strong>Parent Name:</strong> ${user.parentName}</p>
                     <p><strong>Parent Contact:</strong> ${user.parentContact}</p>
-                    <p><strong>Registration Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
+                    
+                     <p><strong>Admission Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
+                   
                 </div>
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color);">
                 ${idProofHtml}
             `;
+
+            // <p><strong>Registration Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
+            //  <p><strong>Admission Date:</strong> ${new Date(user.admissionAt).toLocaleString()}</p>
 
             document.getElementById('studentProfileContent').innerHTML = html;
 
@@ -2902,7 +2912,6 @@
                         <p><strong>Email:</strong> ${user.email}</p>
                         <p><strong>Date of Birth:</strong> ${user.dob ? new Date(user.dob).toLocaleDateString() : 'N/A'}</p>
                         <p><strong>Phone:</strong> ${user.phone}</p>
-                        <p><strong>Registration Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
                     </div>
                 </div>
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color);">
