@@ -1611,9 +1611,6 @@
             }
 
 
-            if (!localStorage.getItem('notifications')) {
-                localStorage.setItem('notifications', JSON.stringify([]));
-            }
 
 
             applyAccessibilitySettings();
@@ -3254,8 +3251,11 @@
         document.getElementById("announcementForm")?.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            const title = announcementTitle.value.trim();
-            const content = announcementText.value.trim();
+            const titleEl = document.getElementById("announcementTitle");
+            const contentEl = document.getElementById("announcementText");
+
+            const title = titleEl.value.trim();
+            const content = contentEl.value.trim();
 
             if (!title || !content) {
                 alert("Please fill all fields");
@@ -3269,25 +3269,31 @@
                     body: JSON.stringify({
                         title,
                         content,
-                        posted_by: currentUser.name
+                        posted_by: "warden" // name/id DOES NOT MATTER
                     })
                 });
 
-                if (!res.ok) throw new Error("Post failed");
+                const data = await res.json();
+
+                if (!res.ok) {
+                    console.error("Backend error:", data);
+                    alert(data.error || "Failed to post announcement");
+                    return;
+                }
 
                 alert("Announcement posted successfully");
-                announcementForm.reset();
+                e.target.reset();
 
-                // refresh everywhere
-                loadAnnouncements();               // warden list
-                loadWardenAnnouncementsPreview();  // warden dashboard
-                loadAnnouncementsPreview();        // student dashboard
+                loadAnnouncements();
+                loadWardenAnnouncementsPreview();
+                loadAnnouncementsPreview();
 
             } catch (err) {
-                console.error(err);
-                alert("Failed to post announcement");
+                console.error("POST announcement failed:", err);
+                alert("Network/backend error");
             }
         });
+
 
 
         // LOAD ANNOUNCEMENTS (WARDEN)
