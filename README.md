@@ -1,5 +1,10 @@
-https://hostel-management-fbproj.web.app/
-(preferably use int for IDs)
+### **✦ Website**
+ https://hostel-management-fbproj.web.app/
+
+### **✦ Railway Backend Project**
+ https://railway.com/invite/2-7qAHC-J__
+
+✧ *Note: Integer (`INT`) data type is preferred for all IDs.*
 
 <h1 align="center">  
 . ݁₊ ⊹ . ݁˖ . ݁  Digital Hostel Management System  . ݁₊ ⊹ . ݁˖ . ݁  
