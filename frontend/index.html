@@ -3199,6 +3199,28 @@
         function normalizeStatus(status) {
             return status.toLowerCase().replace(/\s+/g, '-');
         }
+        function addNotification(type, title, message) {
+            const container = document.getElementById("notificationsContainer");
+            if (!container) return;
+
+            const notif = document.createElement("div");
+            notif.className = `notification ${type}`;
+
+            notif.innerHTML = `
+        <div class="notification-content">
+            <h4>${title}</h4>
+            <p>${message}</p>
+        </div>
+        <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>
+    `;
+
+            container.prepend(notif);
+
+            // auto-remove after 5 seconds
+            setTimeout(() => {
+                notif.remove();
+            }, 5000);
+        }
 
         async function updateComplaintStatus(complaintId, newStatus) {
             try {
