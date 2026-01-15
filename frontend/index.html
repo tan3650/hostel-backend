@@ -37,15 +37,15 @@
 
         /* Dark Mode */
         body.dark-mode {
-            --primary-color: #7b4da8;
+            --primary-color: #7649b9;
             --secondary-color: #86b6de;
-            --success-color: #4caf8f;
+            --success-color: #4ea6ff;
             --danger-color: #d16b6b;
             --warning-color: #d68910;
             --light-bg: #2b174c;
             --white: #3b235f;
-            --text-dark: #ecf0f1;
-            --text-light: #bfaee3;
+            --text-dark: #d55edb;
+            --text-light: #6966e7;
             --border-color: #5c3b8a;
         }
 
@@ -162,7 +162,7 @@
         }
 
         .btn-secondary {
-            background-color: #95a5a6;
+            background-color: #959da6;
             color: var(--white);
         }
 
@@ -792,18 +792,18 @@
     <div id="rolePage" class="page active">
         <div class="container">
             <header style="text-align: center; margin-top: 40px;">
-                <h1>🏥 Digital Hostel Management System</h1>
+                <h1> Digital Hostel Management System</h1>
             </header>
             <div class="role-selection">
                 <div class="role-card" onclick="selectRole('student')">
-                    <h2>👨‍🎓</h2>
+                    <h2>👩🏻‍🎓</h2>
                     <h3>Student Login</h3>
                     <p>Access your hostel dashboard</p>
                     <button class="btn-secondary" onclick="selectRole('student')" style="margin-top: 10px;">Login as
                         Student</button>
                 </div>
                 <div class="role-card" onclick="selectRole('warden')">
-                    <h2>👨‍💼</h2>
+                    <h2>👩🏻‍💼</h2>
                     <h3>Warden Login</h3>
                     <p>Manage hostel operations</p>
                     <button class="btn-secondary" onclick="selectRole('warden')" style="margin-top: 10px;">Login as
@@ -997,7 +997,7 @@
                             <button class="btn-sm btn-secondary" onclick="setFontSize('large')">A+</button>
                             <button class="btn-sm btn-secondary" onclick="setFontSize('extra-large')">A++</button>
                         </div>
-                        <button class="btn-sm btn-secondary" onclick="toggleDarkMode()" id="themeBtn">🌙 Dark</button>
+                        <button class="btn-sm btn-secondary" onclick="toggleDarkMode()" id="themeBtn">.✦Dark ݁˖</button>
                     </div>
                     <button class="btn-danger" onclick="logout()">Logout</button>
                 </div>
@@ -1907,7 +1907,7 @@
             if (userRole === 'student') {
                 studentNav.classList.remove('hidden');
                 wardenNav.classList.add('hidden');
-                document.getElementById('appTitle').textContent = '👨‍🎓 Student Dashboard';
+                document.getElementById('appTitle').textContent = '👩🏻‍🎓 Student Dashboard';
                 // Show student registration prompt on login page
                 if (document.getElementById('loginPage').classList.contains('active')) {
                     document.getElementById('registerPromptStudent').style.display = 'block';
@@ -1916,7 +1916,7 @@
             } else if (userRole === 'warden') {
                 wardenNav.classList.remove('hidden');
                 studentNav.classList.add('hidden');
-                document.getElementById('appTitle').textContent = '👨‍💼 Warden Dashboard';
+                document.getElementById('appTitle').textContent = '👩🏻‍💼 Warden Dashboard';
                 // Show warden registration prompt on login page
                 if (document.getElementById('loginPage').classList.contains('active')) {
                     document.getElementById('registerPromptStudent').style.display = 'none';
@@ -1989,9 +1989,9 @@
         function updateThemeButton() {
             const btn = document.getElementById('themeBtn');
             if (document.body.classList.contains('dark-mode')) {
-                btn.textContent = '☀️ Light';
+                btn.textContent = '☀︎Light☁';
             } else {
-                btn.textContent = '🌙 Dark';
+                btn.textContent = ' ݁˖Dark.✦';
             }
         }
 
