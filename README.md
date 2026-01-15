@@ -8,6 +8,8 @@ Preferably please use int type for ids.
 
 #### Added a zip file with additional stuff if needed (sql dump, vid, screenshots).
 
+https://youtu.be/d_I9VWTsV-I?si=7PYuB-xxJsqQC1-0
+
 
 <h1 align="center">  
 . ݁₊ ⊹ . ݁˖ . ݁  Digital Hostel Management System  . ݁₊ ⊹ . ݁˖ . ݁  
