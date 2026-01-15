@@ -481,10 +481,11 @@
             margin-bottom: 20px;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: var(--shadow); 
-    position: sticky;
-    top: 110px; /* adjust to your header height */
-    z-index: 1000;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 110px;
+            /* adjust to your header height */
+            z-index: 1000;
         }
 
         nav ul {
@@ -916,7 +917,8 @@
                     </div>
                     <div style="grid-column: 1/-1; display: flex; gap: 10px;">
                         <button class="btn-success" onclick="handleStudentRegister()" style="flex: 1;">Register</button>
-                        <button class="btn-secondary" onclick="goBackToRole()" style="width: 50%;">Back to Login</button>
+                        <button class="btn-secondary" onclick="goBackToRole()" style="width: 50%;">Back to
+                            Login</button>
                     </div>
                 </div>
             </div>
@@ -1024,21 +1026,28 @@
                             Report</button></li>
                     <li>
                         <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button>
-                    </li>        
+                    </li>
                 </ul>
             </nav>
 
             <!-- Warden Navigation -->
             <nav id="wardenNav" class="hidden">
                 <ul>
-                    <li><button class="nav-btn" onclick="switchTab('dashboard')" data-label="dashboard">Dashboard</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('warden-profile')" data-label="profile">Profile</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('complaints-manage')" data-label="complaints_manage">Manage Complaints</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('leave-manage')" data-label="leave_manage">Approve Leaves</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort Requests</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('anonymous-manage')" data-label="anonymous_manage">Anonymous Reports</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('announcements')" data-label="announcements">Announcements</button></li>
-                    <li> <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button></li> 
+                    <li><button class="nav-btn" onclick="switchTab('dashboard')"
+                            data-label="dashboard">Dashboard</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('warden-profile')"
+                            data-label="profile">Profile</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('complaints-manage')"
+                            data-label="complaints_manage">Manage Complaints</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('leave-manage')" data-label="leave_manage">Approve
+                            Leaves</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort
+                            Requests</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('anonymous-manage')"
+                            data-label="anonymous_manage">Anonymous Reports</button></li>
+                    <li><button class="nav-btn" onclick="switchTab('announcements')"
+                            data-label="announcements">Announcements</button></li>
+                    <li> <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button></li>
                 </ul>
             </nav>
 
@@ -1685,7 +1694,7 @@
             const admissionDate = document.getElementById('admissionDate').value;
 
             // Validation
-            if (!studentId || !studentEmail || !fullName || !studentDOB || !phone || !parentName || !parentContact || !college || !department || !roomNumber || !password || !confirmPassword || !idProofFile ||!admissionDate) {
+            if (!studentId || !studentEmail || !fullName || !studentDOB || !phone || !parentName || !parentContact || !college || !department || !roomNumber || !password || !confirmPassword || !idProofFile || !admissionDate) {
                 alert('Please fill all required fields');
                 return;
             }
@@ -1988,6 +1997,19 @@
             }
             updateThemeButton();
         }
+        // ========== WARDEN RECENT ACTIVITIES (SAFE STUB) ==========
+        function loadWardenRecentActivities() {
+            const container = document.getElementById("wardenRecentActivities");
+            if (!container) return;
+
+            container.innerHTML = `
+        <div class="empty-state">
+            <h3>No recent activities</h3>
+            <p>Recent complaints, leaves, escorts will appear here.</p>
+        </div>
+    `;
+        }
+
 
         // ========== COMPLAINTS ==========
         function renderDashboard() {
@@ -2260,7 +2282,7 @@
         // async function loadStudentComplaints() {
         //     if (!currentUser) return;
 
-        
+
         //         const res = await fetch(`${API_BASE}/complaints/${currentUser.id}`);
         //         const complaints = await res.json();
 
@@ -2291,10 +2313,10 @@
 
         //         document.getElementById('complaintsList').innerHTML = html;
 
-            //  catch (err) {
-            //     console.error(err);
-            //     alert("Failed to load complaints");
-            // }
+        //  catch (err) {
+        //     console.error(err);
+        //     alert("Failed to load complaints");
+        // }
         // }
 
         function filterComplaints() {
@@ -2506,112 +2528,112 @@
         }
 
         // ========== ANONYMOUS REPORTS ==========
- // ========== ANONYMOUS REPORTS (BACKEND CONNECTED) ==========
+        // ========== ANONYMOUS REPORTS (BACKEND CONNECTED) ==========
 
-function showAnonTooltip() {
-    const tooltip = document.getElementById('anonTooltip');
-    tooltip.style.display = tooltip.style.display === 'none' ? 'block' : 'none';
-}
-
-/* ================= STUDENT: SUBMIT ANONYMOUS REPORT ================= */
-document.getElementById('anonForm')?.addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const type = document.getElementById('anonType').value;
-    const description = document.getElementById('anonDescription').value;
-    const files = document.getElementById('anonEvidenceFiles')?.files || [];
-
-    if (!type || !description) {
-        alert('Please fill all fields');
-        return;
-    }
-
-    let imgBase64 = null;
-
-    if (files.length > 0) {
-        const file = files[0];
-
-        if (file.size > 5 * 1024 * 1024) {
-            alert("Evidence image too large (max 5MB)");
-            return;
+        function showAnonTooltip() {
+            const tooltip = document.getElementById('anonTooltip');
+            tooltip.style.display = tooltip.style.display === 'none' ? 'block' : 'none';
         }
 
-        const reader = new FileReader();
-        reader.onload = async function () {
-            imgBase64 = reader.result;
-            await submitAnonymousReport(type, description, imgBase64);
-        };
-        reader.readAsDataURL(file);
-    } else {
-        await submitAnonymousReport(type, description, null);
-    }
-});
+        /* ================= STUDENT: SUBMIT ANONYMOUS REPORT ================= */
+        document.getElementById('anonForm')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-async function submitAnonymousReport(type, description, img) {
-    try {
-        const res = await fetch(`${API_BASE}/anonymous`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                report_type: type,
-                description: description,
-                img: img
-            })
+            const type = document.getElementById('anonType').value;
+            const description = document.getElementById('anonDescription').value;
+            const files = document.getElementById('anonEvidenceFiles')?.files || [];
+
+            if (!type || !description) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            let imgBase64 = null;
+
+            if (files.length > 0) {
+                const file = files[0];
+
+                if (file.size > 5 * 1024 * 1024) {
+                    alert("Evidence image too large (max 5MB)");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = async function () {
+                    imgBase64 = reader.result;
+                    await submitAnonymousReport(type, description, imgBase64);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                await submitAnonymousReport(type, description, null);
+            }
         });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Submission failed");
+        async function submitAnonymousReport(type, description, img) {
+            try {
+                const res = await fetch(`${API_BASE}/anonymous`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        report_type: type,
+                        description: description,
+                        img: img
+                    })
+                });
 
-        addNotification(
-            'success',
-            'Anonymous Report Submitted',
-            'Your report has been submitted safely.'
-        );
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || "Submission failed");
 
-        document.getElementById('anonForm').reset();
-        document.getElementById('anonEvidencePreview').innerHTML = '';
+                addNotification(
+                    'success',
+                    'Anonymous Report Submitted',
+                    'Your report has been submitted safely.'
+                );
 
-        alert('Anonymous report submitted successfully.');
+                document.getElementById('anonForm').reset();
+                document.getElementById('anonEvidencePreview').innerHTML = '';
 
-    } catch (err) {
-        console.error("❌ Anonymous submit error:", err);
-        alert("Failed to submit anonymous report");
-    }
-}
+                alert('Anonymous report submitted successfully.');
 
-/* ================= IMAGE PREVIEW (UNCHANGED UI) ================= */
-document.getElementById('anonEvidenceFiles')?.addEventListener('change', function (e) {
-    const preview = document.getElementById('anonEvidencePreview');
-    preview.innerHTML = '';
-
-    Array.from(e.target.files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function (evt) {
-            const img = document.createElement('img');
-            img.src = evt.target.result;
-            img.style.maxWidth = '100px';
-            img.style.maxHeight = '100px';
-            img.style.borderRadius = '6px';
-            img.style.border = '2px solid var(--border-color)';
-            preview.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-    });
-});
-
-/* ================= WARDEN: LOAD ANONYMOUS REPORTS ================= */
-async function loadWardenAnonymous() {
-    try {
-        const res = await fetch(`${API_BASE}/anonymous`);
-        const reports = await res.json();
-
-        if (!Array.isArray(reports) || reports.length === 0) {
-            document.getElementById('wardenAnonymousList').innerHTML =
-                '<div class="empty-state"><h3>No anonymous reports</h3></div>';
-            return;
+            } catch (err) {
+                console.error("❌ Anonymous submit error:", err);
+                alert("Failed to submit anonymous report");
+            }
         }
 
-        const html = reports.map(r => `
+        /* ================= IMAGE PREVIEW (UNCHANGED UI) ================= */
+        document.getElementById('anonEvidenceFiles')?.addEventListener('change', function (e) {
+            const preview = document.getElementById('anonEvidencePreview');
+            preview.innerHTML = '';
+
+            Array.from(e.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    const img = document.createElement('img');
+                    img.src = evt.target.result;
+                    img.style.maxWidth = '100px';
+                    img.style.maxHeight = '100px';
+                    img.style.borderRadius = '6px';
+                    img.style.border = '2px solid var(--border-color)';
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        /* ================= WARDEN: LOAD ANONYMOUS REPORTS ================= */
+        async function loadWardenAnonymous() {
+            try {
+                const res = await fetch(`${API_BASE}/anonymous`);
+                const reports = await res.json();
+
+                if (!Array.isArray(reports) || reports.length === 0) {
+                    document.getElementById('wardenAnonymousList').innerHTML =
+                        '<div class="empty-state"><h3>No anonymous reports</h3></div>';
+                    return;
+                }
+
+                const html = reports.map(r => `
             <div class="list-item">
                 <div class="list-item-content">
                     <h4>Anonymous Report #${r.id}</h4>
@@ -2640,24 +2662,24 @@ async function loadWardenAnonymous() {
             </div>
         `).join('');
 
-        document.getElementById('wardenAnonymousList').innerHTML = html;
+                document.getElementById('wardenAnonymousList').innerHTML = html;
 
-    } catch (err) {
-        console.error("❌ Load anonymous reports error:", err);
-        alert("Failed to load anonymous reports");
-    }
-}
+            } catch (err) {
+                console.error("❌ Load anonymous reports error:", err);
+                alert("Failed to load anonymous reports");
+            }
+        }
 
-/* ================= WARDEN: VIEW FULL REPORT ================= */
-async function viewAnonReport(reportId) {
-    try {
-        const res = await fetch(`${API_BASE}/anonymous`);
-        const reports = await res.json();
-        const report = reports.find(r => r.id === reportId);
+        /* ================= WARDEN: VIEW FULL REPORT ================= */
+        async function viewAnonReport(reportId) {
+            try {
+                const res = await fetch(`${API_BASE}/anonymous`);
+                const reports = await res.json();
+                const report = reports.find(r => r.id === reportId);
 
-        if (!report) return;
+                if (!report) return;
 
-        let html = `
+                let html = `
             <div class="form-group">
                 <p><strong>Report ID:</strong> ${report.id}</p>
                 <p><strong>Type:</strong> ${report.report_type}</p>
@@ -2675,44 +2697,44 @@ async function viewAnonReport(reportId) {
                 </p>
         `;
 
-        if (report.img) {
-            html += `
+                if (report.img) {
+                    html += `
                 <p><strong>Evidence:</strong></p>
                 <img src="${report.img}"
                      style="max-width: 100%; border-radius: 6px; margin-top: 10px;">
             `;
+                }
+
+                html += `</div>`;
+
+                document.getElementById('complaintModalContent').innerHTML = html;
+                document.getElementById('complaintModal').classList.add('active');
+
+            } catch (err) {
+                console.error("❌ View anonymous report error:", err);
+            }
         }
 
-        html += `</div>`;
+        /* ================= WARDEN: UPDATE STATUS ================= */
+        async function updateAnonStatus(id, status) {
+            try {
+                const res = await fetch(`${API_BASE}/anonymous/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status })
+                });
 
-        document.getElementById('complaintModalContent').innerHTML = html;
-        document.getElementById('complaintModal').classList.add('active');
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error);
 
-    } catch (err) {
-        console.error("❌ View anonymous report error:", err);
-    }
-}
+                alert("Status updated successfully");
+                loadWardenAnonymous();
 
-/* ================= WARDEN: UPDATE STATUS ================= */
-async function updateAnonStatus(id, status) {
-    try {
-        const res = await fetch(`${API_BASE}/anonymous/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status })
-        });
-
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-
-        alert("Status updated successfully");
-        loadWardenAnonymous();
-
-    } catch (err) {
-        console.error("❌ Update status error:", err);
-        alert("Failed to update report status");
-    }
-}
+            } catch (err) {
+                console.error("❌ Update status error:", err);
+                alert("Failed to update report status");
+            }
+        }
 
         // ========== ESCORT REQUESTS ==========
         document.getElementById('escortForm')?.addEventListener('submit', async function (e) {
@@ -3226,43 +3248,43 @@ async function updateAnonStatus(id, status) {
         }
 
         // ========== ANNOUNCEMENTS ==========
-// ========== ANNOUNCEMENTS (FINAL, STRICT-CORS SAFE) ==========
+        // ========== ANNOUNCEMENTS (FINAL, STRICT-CORS SAFE) ==========
 
-// POST ANNOUNCEMENT (WARDEN)
-document.getElementById("announcementForm")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
+        // POST ANNOUNCEMENT (WARDEN)
+        document.getElementById("announcementForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-  const title = document.getElementById("announcementTitle").value.trim();
-  const content = document.getElementById("announcementText").value.trim();
+            const title = document.getElementById("announcementTitle").value.trim();
+            const content = document.getElementById("announcementText").value.trim();
 
-  if (!title || !content) return alert("Fill all fields");
+            if (!title || !content) return alert("Fill all fields");
 
-  await fetch(`${API_BASE}/announcements`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({
-      title,
-      content,
-      posted_by: currentUser.name
-    })
-  });
+            await fetch(`${API_BASE}/announcements`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({
+                    title,
+                    content,
+                    posted_by: currentUser.name
+                })
+            });
 
-  document.getElementById("announcementForm").reset();
-  loadAnnouncements();
-  loadAnnouncementsPreview();
-  loadWardenAnnouncementsPreview();
-});
+            document.getElementById("announcementForm").reset();
+            loadAnnouncements();
+            loadAnnouncementsPreview();
+            loadWardenAnnouncementsPreview();
+        });
 
-// LOAD ANNOUNCEMENTS (WARDEN)
-async function loadAnnouncements() {
-  const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
-  const data = await res.json();
+        // LOAD ANNOUNCEMENTS (WARDEN)
+        async function loadAnnouncements() {
+            const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
+            const data = await res.json();
 
-  document.getElementById("announcementsList").innerHTML =
-    data.length === 0
-      ? `<div class="empty-state"><h3>No announcements</h3></div>`
-      : data.map(a => `
+            document.getElementById("announcementsList").innerHTML =
+                data.length === 0
+                    ? `<div class="empty-state"><h3>No announcements</h3></div>`
+                    : data.map(a => `
           <div class="notification info">
             <div class="notification-content">
               <h4>${a.title}</h4>
@@ -3271,16 +3293,16 @@ async function loadAnnouncements() {
             </div>
           </div>
         `).join("");
-}
+        }
 
-// STUDENT PREVIEW
-async function loadAnnouncementsPreview() {
-  const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
-  const data = await res.json();
-  if (!data.length) return;
+        // STUDENT PREVIEW
+        async function loadAnnouncementsPreview() {
+            const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
+            const data = await res.json();
+            if (!data.length) return;
 
-  const a = data[0];
-  document.getElementById("announcementsPreview").innerHTML = `
+            const a = data[0];
+            document.getElementById("announcementsPreview").innerHTML = `
     <div class="notification info">
       <div class="notification-content">
         <h4>${a.title}</h4>
@@ -3288,15 +3310,15 @@ async function loadAnnouncementsPreview() {
       </div>
     </div>
   `;
-}
+        }
 
-// STUDENT VIEW ALL
-async function loadAllAnnouncements() {
-  const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
-  const data = await res.json();
+        // STUDENT VIEW ALL
+        async function loadAllAnnouncements() {
+            const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
+            const data = await res.json();
 
-  document.getElementById("announcementsFullList").innerHTML =
-    data.map(a => `
+            document.getElementById("announcementsFullList").innerHTML =
+                data.map(a => `
       <div class="notification info">
         <div class="notification-content">
           <h4>${a.title}</h4>
@@ -3304,16 +3326,16 @@ async function loadAllAnnouncements() {
         </div>
       </div>
     `).join("");
-}
+        }
 
-// WARDEN DASHBOARD PREVIEW
-async function loadWardenAnnouncementsPreview() {
-  const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
-  const data = await res.json();
-  if (!data.length) return;
+        // WARDEN DASHBOARD PREVIEW
+        async function loadWardenAnnouncementsPreview() {
+            const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
+            const data = await res.json();
+            if (!data.length) return;
 
-  const a = data[0];
-  document.getElementById("wardenAnnouncementsPreview").innerHTML = `
+            const a = data[0];
+            document.getElementById("wardenAnnouncementsPreview").innerHTML = `
     <div class="notification info">
       <div class="notification-content">
         <h4>${a.title}</h4>
@@ -3321,7 +3343,7 @@ async function loadWardenAnnouncementsPreview() {
       </div>
     </div>
   `;
-}
+        }
 
 
 
