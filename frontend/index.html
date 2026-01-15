@@ -3226,174 +3226,104 @@ async function updateAnonStatus(id, status) {
         }
 
         // ========== ANNOUNCEMENTS ==========
- // ========== ANNOUNCEMENTS (BACKEND CONNECTED) ==========
+// ========== ANNOUNCEMENTS (FINAL, STRICT-CORS SAFE) ==========
 
-// -------- POST ANNOUNCEMENT (WARDEN) --------
-document.getElementById('announcementForm')?.addEventListener('submit', async function (e) {
-    e.preventDefault();
+// POST ANNOUNCEMENT (WARDEN)
+document.getElementById("announcementForm")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const title = document.getElementById('announcementTitle').value.trim();
-    const content = document.getElementById('announcementText').value.trim();
+  const title = document.getElementById("announcementTitle").value.trim();
+  const content = document.getElementById("announcementText").value.trim();
 
-    if (!title || !content) {
-        alert('Please fill all fields');
-        return;
-    }
+  if (!title || !content) return alert("Fill all fields");
 
-    try {
-        const res = await fetch(`${API_BASE}/announcements`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                title,
-                content,
-                posted_by: currentUser.name
-            })
-        });
+  await fetch(`${API_BASE}/announcements`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({
+      title,
+      content,
+      posted_by: currentUser.name
+    })
+  });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Post failed");
-
-        alert("Announcement posted successfully");
-        document.getElementById('announcementForm').reset();
-        loadAnnouncements();
-        loadAnnouncementsPreview();
-        loadWardenAnnouncementsPreview();
-
-    } catch (err) {
-        console.error("❌ Announcement post error:", err);
-        alert("Failed to post announcement");
-    }
+  document.getElementById("announcementForm").reset();
+  loadAnnouncements();
+  loadAnnouncementsPreview();
+  loadWardenAnnouncementsPreview();
 });
 
-
-// -------- LOAD ANNOUNCEMENTS (WARDEN PAGE) --------
+// LOAD ANNOUNCEMENTS (WARDEN)
 async function loadAnnouncements() {
-    try {
-        const res = await fetch(`${API_BASE}/announcements`);
-        const announcements = await res.json();
+  const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
+  const data = await res.json();
 
-        if (!Array.isArray(announcements) || announcements.length === 0) {
-            document.getElementById('announcementsList').innerHTML =
-                '<div class="empty-state"><h3>No announcements yet</h3></div>';
-            return;
-        }
-
-        document.getElementById('announcementsList').innerHTML =
-            announcements.map(ann => `
-                <div class="notification info">
-                    <div class="notification-content">
-                        <h4>${ann.title}</h4>
-                        <p>${ann.content}</p>
-                        <p style="font-size:12px; margin-top:10px;">
-                            Posted by ${ann.posted_by} on
-                            ${new Date(ann.created_at).toLocaleString()}
-                        </p>
-                    </div>
-                </div>
-            `).join('');
-
-    } catch (err) {
-        console.error("❌ Load announcements error:", err);
-        document.getElementById('announcementsList').innerHTML =
-            '<div class="empty-state"><h3>Failed to load announcements</h3></div>';
-    }
+  document.getElementById("announcementsList").innerHTML =
+    data.length === 0
+      ? `<div class="empty-state"><h3>No announcements</h3></div>`
+      : data.map(a => `
+          <div class="notification info">
+            <div class="notification-content">
+              <h4>${a.title}</h4>
+              <p>${a.content}</p>
+              <p style="font-size:12px;">${new Date(a.created_at).toLocaleString()}</p>
+            </div>
+          </div>
+        `).join("");
 }
 
-
-// -------- STUDENT DASHBOARD PREVIEW (LATEST ONE) --------
+// STUDENT PREVIEW
 async function loadAnnouncementsPreview() {
-    try {
-        const res = await fetch(`${API_BASE}/announcements`);
-        const announcements = await res.json();
+  const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
+  const data = await res.json();
+  if (!data.length) return;
 
-        if (!Array.isArray(announcements) || announcements.length === 0) {
-            document.getElementById('announcementsPreview').innerHTML =
-                '<div class="empty-state"><p>No announcements</p></div>';
-            return;
-        }
-
-        const ann = announcements[0]; // latest (already DESC from backend)
-
-        document.getElementById('announcementsPreview').innerHTML = `
-            <div class="notification info">
-                <div class="notification-content">
-                    <h4>${ann.title}</h4>
-                    <p>${ann.content}</p>
-                    <p style="font-size:12px; margin-top:8px;">
-                        ${new Date(ann.created_at).toLocaleString()}
-                    </p>
-                </div>
-            </div>
-        `;
-
-    } catch (err) {
-        console.error("❌ Announcement preview error:", err);
-    }
+  const a = data[0];
+  document.getElementById("announcementsPreview").innerHTML = `
+    <div class="notification info">
+      <div class="notification-content">
+        <h4>${a.title}</h4>
+        <p>${a.content}</p>
+      </div>
+    </div>
+  `;
 }
 
-
-// -------- STUDENT: VIEW ALL ANNOUNCEMENTS --------
+// STUDENT VIEW ALL
 async function loadAllAnnouncements() {
-    try {
-        const res = await fetch(`${API_BASE}/announcements`);
-        const announcements = await res.json();
+  const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
+  const data = await res.json();
 
-        if (!Array.isArray(announcements) || announcements.length === 0) {
-            document.getElementById('announcementsFullList').innerHTML =
-                '<div class="empty-state"><h3>No announcements yet</h3></div>';
-            return;
-        }
-
-        document.getElementById('announcementsFullList').innerHTML =
-            announcements.map(ann => `
-                <div class="notification info">
-                    <div class="notification-content">
-                        <h4>${ann.title}</h4>
-                        <p>${ann.content}</p>
-                        <p style="font-size:12px; margin-top:10px;">
-                            Posted on ${new Date(ann.created_at).toLocaleString()}
-                        </p>
-                    </div>
-                </div>
-            `).join('');
-
-    } catch (err) {
-        console.error("❌ Load all announcements error:", err);
-    }
+  document.getElementById("announcementsFullList").innerHTML =
+    data.map(a => `
+      <div class="notification info">
+        <div class="notification-content">
+          <h4>${a.title}</h4>
+          <p>${a.content}</p>
+        </div>
+      </div>
+    `).join("");
 }
 
-
-// -------- WARDEN DASHBOARD PREVIEW --------
+// WARDEN DASHBOARD PREVIEW
 async function loadWardenAnnouncementsPreview() {
-    try {
-        const res = await fetch(`${API_BASE}/announcements`);
-        const announcements = await res.json();
+  const res = await fetch(`${API_BASE}/announcements`, { credentials: "include" });
+  const data = await res.json();
+  if (!data.length) return;
 
-        if (!Array.isArray(announcements) || announcements.length === 0) {
-            document.getElementById('wardenAnnouncementsPreview').innerHTML =
-                '<div class="empty-state"><p>No announcements</p></div>';
-            return;
-        }
-
-        const ann = announcements[0];
-
-        document.getElementById('wardenAnnouncementsPreview').innerHTML = `
-            <div class="notification info">
-                <div class="notification-content">
-                    <h4>${ann.title}</h4>
-                    <p>${ann.content}</p>
-                    <p style="font-size:12px; margin-top:8px;">
-                        ${new Date(ann.created_at).toLocaleString()}
-                    </p>
-                </div>
-            </div>
-        `;
-
-    } catch (err) {
-        console.error("❌ Warden announcement preview error:", err);
-    }
+  const a = data[0];
+  document.getElementById("wardenAnnouncementsPreview").innerHTML = `
+    <div class="notification info">
+      <div class="notification-content">
+        <h4>${a.title}</h4>
+        <p>${a.content}</p>
+      </div>
+    </div>
+  `;
 }
+
+
 
     </script>
 </body>

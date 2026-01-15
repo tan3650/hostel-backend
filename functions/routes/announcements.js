@@ -4,18 +4,14 @@ const db = require("../db");
 
 /**
  * POST /announcements
- * Warden: Create announcement
+ * Create announcement (warden)
  */
 router.post("/", (req, res) => {
   const { title, content, posted_by } = req.body;
 
-  if (!title || !content || !posted_by) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
-
   const sql = `
-    INSERT INTO announcements (title, content, posted_by)
-    VALUES (?, ?, ?)
+    INSERT INTO announcements (title, content, posted_by, status)
+    VALUES (?, ?, ?, 'Published')
   `;
 
   db.query(sql, [title, content, posted_by], (err, result) => {
@@ -25,7 +21,7 @@ router.post("/", (req, res) => {
     }
 
     res.json({
-      message: "Announcement created",
+      success: true,
       id: result.insertId
     });
   });
@@ -33,48 +29,17 @@ router.post("/", (req, res) => {
 
 /**
  * GET /announcements
- * Student + Warden: Fetch all published announcements
+ * Fetch all announcements
  */
 router.get("/", (req, res) => {
-  const sql = `
-    SELECT *
-    FROM announcements
-    WHERE status = 'Published'
-    ORDER BY created_at DESC
-  `;
-
-  db.query(sql, (err, rows) => {
-    if (err) {
-      console.error("Fetch announcements error:", err);
-      return res.status(500).json({ error: "DB error" });
-    }
-
-    res.json(rows);
-  });
-});
-
-/**
- * PUT /announcements/:id
- * Warden: Update announcement status
- */
-router.put("/:id", (req, res) => {
-  const { status } = req.body;
-  const { id } = req.params;
-
-  if (!["Draft", "Published", "Archived"].includes(status)) {
-    return res.status(400).json({ error: "Invalid status" });
-  }
-
   db.query(
-    "UPDATE announcements SET status=? WHERE id=?",
-    [status, id],
-    (err) => {
+    "SELECT * FROM announcements ORDER BY created_at DESC",
+    (err, rows) => {
       if (err) {
-        console.error("Announcement update error:", err);
+        console.error("Fetch announcements error:", err);
         return res.status(500).json({ error: "DB error" });
       }
-
-      res.json({ message: "Status updated" });
+      res.json(rows);
     }
   );
 });
