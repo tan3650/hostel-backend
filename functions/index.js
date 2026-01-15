@@ -15,6 +15,8 @@ app.use(express.json());
 app.use("/complaints", require("./routes/complaints"));
 app.use("/escorts", require("./routes/escorts"));
 app.use("/nightout", require("./routes/nightout"));
+const anonymousRoutes = require("./routes/anonymous");
+app.use("/anonymous", anonymousRoutes);
 
 // health check
 app.get("/", (req, res) => {

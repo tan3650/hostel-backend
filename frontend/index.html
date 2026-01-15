@@ -481,7 +481,10 @@
             margin-bottom: 20px;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow); 
+    position: sticky;
+    top: 110px; /* adjust to your header height */
+    z-index: 1000;
         }
 
         nav ul {
@@ -788,7 +791,7 @@
     <div id="rolePage" class="page active">
         <div class="container">
             <header style="text-align: center; margin-top: 40px;">
-                <h1> Digital Hostel Management System</h1>
+                <h1>🏥 Digital Hostel Management System</h1>
             </header>
             <div class="role-selection">
                 <div class="role-card" onclick="selectRole('student')">
@@ -831,11 +834,11 @@
                     <div class="form-group" style="text-align: center;">
                         <p id="registerPromptStudent" style="display: none; margin-bottom: 15px;">
                             <button class="btn-sm btn-primary" onclick="showStudentRegisterForm()"
-                                style="width: 100%; margin-bottom: 10px;"> New Student? Register Here</button>
+                                style="width: 100%; margin-bottom: 10px;">📝 New Student? Register Here</button>
                         </p>
                         <p id="registerPromptWarden" style="display: none; margin-bottom: 15px;">
                             <button class="btn-sm btn-primary" onclick="showWardenRegisterForm()"
-                                style="width: 100%; margin-bottom: 10px;"> New Warden? Register Here</button>
+                                style="width: 100%; margin-bottom: 10px;">📝 New Warden? Register Here</button>
                         </p>
                     </div>
                     <div class="form-group" style="text-align: center;">
@@ -873,19 +876,18 @@
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number *</label>
-                        <input type="text" id="phone" required>
+                        <input type="tel" id="phone" pattern="[0-9]+" required>
                     </div>
                     <div class="form-group">
                         <label for="parentName">Parent Name *</label>
                         <input type="text" id="parentName" required>
                     </div>
                     <div class="form-group">
-                        <label for="parentContact">Parent Contact (Numeric) *</label>
+                        <label for="parentContact">Parent Contact *</label>
                         <input type="tel" id="parentContact" pattern="[0-9]+" required>
                     </div>
                     <div class="form-group">
                         <label for="college">College Name *</label>
-                        <!-- <label for="College Name">College Name *</label> -->
                         <input type="text" id="college" required>
                     </div>
                     <div class="form-group">
@@ -897,8 +899,8 @@
                         <input type="text" id="roomNumber" required>
                     </div>
                     <div class="form-group">
-                        <label for="remainingFee">Remaining Fee (₹) *</label>
-                        <input type="number" id="remainingFee" min="0" required>
+                        <label for="admissionDate">Admission Date *</label>
+                        <input type="date" id="admissionDate" required>
                     </div>
                     <div class="form-group">
                         <label for="idProof">ID Card/Fee Receipt Photo *</label>
@@ -914,9 +916,7 @@
                     </div>
                     <div style="grid-column: 1/-1; display: flex; gap: 10px;">
                         <button class="btn-success" onclick="handleStudentRegister()" style="flex: 1;">Register</button>
-                        <!-- <button class="btn-secondary" onclick="backToLogin()" style="flex: 1;">Back to Login</button> -->
-                        <button class="btn-secondary" onclick="goBackToRole()" style="width: 50%;">Back to
-                            Login</button>
+                        <button class="btn-secondary" onclick="goBackToRole()" style="width: 50%;">Back to Login</button>
                     </div>
                 </div>
             </div>
@@ -945,7 +945,7 @@
                     </div>
                     <div class="form-group">
                         <label for="wardenPhone">Phone Number *</label>
-                        <input type="text" id="wardenPhone" required>
+                        <input type="tel" id="wardenPhone" pattern="[0-9]+" required>
                     </div>
                     <div class="form-group">
                         <label for="wardenDOB">Date of Birth *</label>
@@ -995,7 +995,7 @@
                             <button class="btn-sm btn-secondary" onclick="setFontSize('large')">A+</button>
                             <button class="btn-sm btn-secondary" onclick="setFontSize('extra-large')">A++</button>
                         </div>
-                        <button class="btn-sm btn-secondary" onclick="toggleDarkMode()" id="themeBtn"> Dark</button>
+                        <button class="btn-sm btn-secondary" onclick="toggleDarkMode()" id="themeBtn">🌙 Dark</button>
                     </div>
                     <button class="btn-danger" onclick="logout()">Logout</button>
                 </div>
@@ -1010,9 +1010,6 @@
                     <li><button class="nav-btn" onclick="switchTab('dashboard')"
                             data-label="dashboard">Dashboard</button></li>
                     <li><button class="nav-btn" onclick="switchTab('profile')" data-label="profile">Profile</button>
-                    <li>
-                        <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button>
-                    </li>
                     </li>
                     <li><button class="nav-btn" onclick="switchTab('status')" data-label="status">Status</button></li>
                     <li><button class="nav-btn" onclick="switchTab('complaint')" data-label="complaint">Register
@@ -1025,11 +1022,14 @@
                             Request</button></li>
                     <li><button class="nav-btn" onclick="switchTab('anonymous')" data-label="anonymous">Anonymous
                             Report</button></li>
+                    <li>
+                        <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button>
+                    </li>        
                 </ul>
             </nav>
 
             <!-- Warden Navigation -->
-            <!-- <nav id="wardenNav" class="hidden">
+            <nav id="wardenNav" class="hidden">
                 <ul>
                     <li><button class="nav-btn" onclick="switchTab('dashboard')" data-label="dashboard">Dashboard</button></li>
                     <li><button class="nav-btn" onclick="switchTab('warden-profile')" data-label="profile">Profile</button></li>
@@ -1038,42 +1038,33 @@
                     <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort Requests</button></li>
                     <li><button class="nav-btn" onclick="switchTab('anonymous-manage')" data-label="anonymous_manage">Anonymous Reports</button></li>
                     <li><button class="nav-btn" onclick="switchTab('announcements')" data-label="announcements">Announcements</button></li>
+                    <li> <button class="nav-btn" onclick="switchTab('rulebook')">Rule Book</button></li> 
                 </ul>
-            </nav> -->
+            </nav>
 
             <!-- Student Dashboard -->
             <div id="studentDashboard" class="tab-content active">
                 <div class="dashboard-grid" id="studentDashboardCards">
                     <div class="card">
-                        <h3> Complaints Summary</h3>
+                        <h3>📋 Complaints Summary</h3>
                         <div class="card-number" id="complaintsTotal">0</div>
                         <p>Resolved: <span id="complaintsResolved">0</span></p>
                     </div>
 
                     <div class="card">
-                        <h3> Night-out Requests</h3>
+                        <h3>🌙 Night-out Requests</h3>
                         <div class="card-number" id="nightoutTotal">0</div>
                         <p>Active: <span id="nightoutActive">0</span></p>
                     </div>
                 </div>
                 <div class="dashboard-grid" id="studentDashboardCards"></div>
-                <div class="section-title" style="margin-top: 30px;"> Announcements</div>
+                <div class="section-title" style="margin-top: 30px;">📢 Announcements</div>
                 <div id="announcementsPreview"></div>
                 <button class="btn-primary" onclick="switchTab('announcements-view')" style="margin-bottom: 20px;">View
                     All Announcements</button>
                 <div class="section-title" data-label="recent_activity">Recent Activity</div>
                 <div id="recentActivityList"></div>
             </div>
-
-            <!-- Warden Dashboard -->
-            <!-- <div id="wardenDashboard" class="tab-content">
-                <div class="dashboard-grid" id="wardenDashboardCards"></div>
-                <div class="section-title" style="margin-top: 30px;"> Announcements</div>
-                <div id="wardenAnnouncementsPreview"></div>
-                <button class="btn-primary" onclick="switchTab('announcements')" style="margin-bottom: 20px;">View All Announcements</button>
-                <div class="section-title"> Recent Activities</div>
-                <div id="wardenRecentActivities"></div>
-            </div> -->
 
             <!-- Student Profile -->
             <div id="studentProfile" class="tab-content hidden">
@@ -1091,41 +1082,41 @@
                 </p>
 
                 <div class="card" style="white-space: pre-line; line-height: 1.7;">
-                    A. Curfew & Attendance
+                    <b>A. Curfew & Attendance</b>
                     • Weekday curfew: 21:00 (9:00 PM)
                     • Weekend curfew: 21:30 (9:30 PM)
                     • Daily attendance at ground floor is mandatory
                     • Late return fine: ₹100 per hour
 
-                    B. Leave & Permissions
+                    </b>B. Leave & Permissions</b>
                     • All night-out requests must be submitted via system
                     • Parent contact required
                     • Approval is warden’s discretion
 
-                    C. Conduct & Safety
+                    </b>C. Conduct & Safety</b>
                     • No loud music or violence
                     • Drugs, alcohol, smoking prohibited
                     • Sharp objects prohibited
 
-                    D. Fire & Festivals
+                    <b>D. Fire & Festivals</b>
                     • Firecrackers prohibited
                     • Unsafe celebrations banned
 
-                    E. Appliances & Food
+                    <b>E. Appliances & Food</b>
                     • Only permitted appliances
                     • Kitchen closed after 12 AM
                     • No food delivery after 11:30 PM
 
-                    F. Property & Fees
+                    <b>F. Property & Fees</b>
                     • Damage fine: ₹5,000 or actual cost
                     • Late fee penalties apply
 
-                    G. Miscellaneous
+                    <b>G. Miscellaneous</b>
                     • Hostel not responsible for belongings
                     • Gates open at 6:00 AM
                     • Room allocation by authority
 
-                    H. Enforcement
+                    <b>H. Enforcement</b>
                     • Violations may lead to fines or eviction
                     • Rules may be updated anytime
                 </div>
@@ -1305,36 +1296,6 @@
                 <div id="announcementsFullList"></div>
             </div>
 
-            <!-- Warden Navigation -->
-            <nav id="wardenNav" class="hidden">
-                <ul>
-                    <li><button class="nav-btn" onclick="switchTab('dashboard')"
-                            data-label="dashboard">Dashboard</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('warden-profile')"
-                            data-label="profile">Profile</button></li>
-                    <!-- <li><button class="nav-btn" onclick="switchTab('dashboard')"
-                            data-label="dashboard">Dashboard</button></li> -->
-                    <!-- <button class="nav-btn" onclick="switchTab('warden-profile')"
-                            data-label="profile">Profile</button></li> -->
-                    <li><button class="nav-btn" onclick="switchTab('complaints-manage')"
-                            data-label="complaints_manage">Manage Complaints</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('leave-manage')" data-label="leave_manage">Approve
-                            Leaves</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort
-                            Requests</button></li>
-                    <!-- <li><button class="nav-btn" onclick="switchTab('complaints-manage')"
-                            data-label="complaints_manage">Manage Complaints</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('leave-manage')" data-label="leave_manage">Approve
-                            Leaves</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('escort-manage')" data-label="escort_manage">Escort
-                            Requests</button></li> -->
-                    <li><button class="nav-btn" onclick="switchTab('anonymous-manage')"
-                            data-label="anonymous_manage">Anonymous Reports</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('announcements')"
-                            data-label="announcements">Announcements</button></li>
-                    <li><button class="nav-btn" onclick="switchTab('rulebook')" data-label="rulebook"> Rule Book</button> </li>
-                </ul>
-            </nav>
 
             <!-- Warden Dashboard -->
             <div id="wardenDashboard" class="tab-content">
@@ -1629,9 +1590,6 @@
                 localStorage.setItem('escorts', JSON.stringify([]));
             }
 
-            if (!localStorage.getItem('anonymousReports')) {
-                localStorage.setItem('anonymousReports', JSON.stringify([]));
-            }
 
             if (!localStorage.getItem('notifications')) {
                 localStorage.setItem('notifications', JSON.stringify([]));
@@ -1727,9 +1685,10 @@
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             const idProofFile = document.getElementById('idProof').files[0];
+            const admissionDate = document.getElementById('admissionDate').value;
 
             // Validation
-            if (!studentId || !studentEmail || !fullName || !studentDOB || !phone || !parentName || !parentContact || !college || !department || !roomNumber || !password || !confirmPassword || !idProofFile) {
+            if (!studentId || !studentEmail || !fullName || !studentDOB || !phone || !parentName || !parentContact || !college || !department || !roomNumber || !password || !confirmPassword || !idProofFile ||!admissionDate) {
                 alert('Please fill all required fields');
                 return;
             }
@@ -1773,10 +1732,10 @@
                     college: college,
                     department: department,
                     roomNumber: roomNumber,
-                    remainingFee: 0,
                     idProof: e.target.result, // Base64 encoded image
                     profilePicture: null,
-                    registeredAt: new Date().toISOString()
+                    registeredAt: new Date().toISOString(),
+                    // admissionAt: new Date().toISOString()
                 };
 
                 users.push(newUser);
@@ -1836,7 +1795,7 @@
                     dob: wardenDOB,
                     idCardImage: e.target.result, // Base64 encoded ID card
                     profilePicture: null,
-                    registeredAt: new Date().toISOString()
+                    // registeredAt: new Date().toISOString()
                 };
 
                 users.push(newWarden);
@@ -1899,6 +1858,7 @@
                     document.getElementById('rulebookTab').classList.add('active');
                 }
                 else if (tabName === 'complaints-manage') { document.getElementById('manageComplaints').classList.add('active'); loadWardenComplaints(); }
+                //  else if (tabName === 'complaints-manage') { document.getElementById('manageComplaints').classList.add('hidden'); loadWardenComplaints(); }
                 else if (tabName === 'leave-manage') { document.getElementById('manageLeaves').classList.add('active'); loadWardenLeaves(); }
                 else if (tabName === 'escort-manage') { document.getElementById('manageEscorts').classList.add('active'); loadWardenEscorts(); }
                 else if (tabName === 'anonymous-manage') { document.getElementById('manageAnonymous').classList.add('active'); loadWardenAnonymous(); }
@@ -2298,6 +2258,48 @@
             }
         }
 
+
+
+        // async function loadStudentComplaints() {
+        //     if (!currentUser) return;
+
+        
+        //         const res = await fetch(`${API_BASE}/complaints/${currentUser.id}`);
+        //         const complaints = await res.json();
+
+        //         if (!Array.isArray(complaints) || complaints.length === 0) {
+        //             document.getElementById('complaintsList').innerHTML =
+        //                 '<div class="empty-state"><h3>No complaints found</h3></div>';
+        //             return;
+        //         }
+
+        //         const html = complaints.map(c => `
+        //     <div class="list-item">
+        //         <div class="list-item-content">
+        //             <h4>${c.title}</h4>
+        //             <p>${c.description}</p>
+        //             <p><strong>Priority:</strong> ${c.priority}</p>
+        //             <p>
+        //                 <strong>Status:</strong>
+        //                 <span class="status-badge status-${c.status.toLowerCase().replace(' ', '-')}">
+        //                     ${c.status}
+        //                 </span>
+        //             </p>
+        //             <p style="font-size: 12px;">
+        //                 Submitted: ${new Date(c.created_at).toLocaleString()}
+        //             </p>
+        //         </div>
+        //     </div>
+        // `).join('');
+
+        //         document.getElementById('complaintsList').innerHTML = html;
+
+            //  catch (err) {
+            //     console.error(err);
+            //     alert("Failed to load complaints");
+            // }
+        // }
+
         function filterComplaints() {
             loadStudentComplaints();
         }
@@ -2507,147 +2509,213 @@
         }
 
         // ========== ANONYMOUS REPORTS ==========
-        function showAnonTooltip() {
-            const tooltip = document.getElementById('anonTooltip');
-            tooltip.style.display = tooltip.style.display === 'none' ? 'block' : 'none';
+ // ========== ANONYMOUS REPORTS (BACKEND CONNECTED) ==========
+
+function showAnonTooltip() {
+    const tooltip = document.getElementById('anonTooltip');
+    tooltip.style.display = tooltip.style.display === 'none' ? 'block' : 'none';
+}
+
+/* ================= STUDENT: SUBMIT ANONYMOUS REPORT ================= */
+document.getElementById('anonForm')?.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const type = document.getElementById('anonType').value;
+    const description = document.getElementById('anonDescription').value;
+    const files = document.getElementById('anonEvidenceFiles')?.files || [];
+
+    if (!type || !description) {
+        alert('Please fill all fields');
+        return;
+    }
+
+    let imgBase64 = null;
+
+    if (files.length > 0) {
+        const file = files[0];
+
+        if (file.size > 5 * 1024 * 1024) {
+            alert("Evidence image too large (max 5MB)");
+            return;
         }
 
-        document.getElementById('anonForm')?.addEventListener('submit', function (e) {
-            e.preventDefault();
+        const reader = new FileReader();
+        reader.onload = async function () {
+            imgBase64 = reader.result;
+            await submitAnonymousReport(type, description, imgBase64);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        await submitAnonymousReport(type, description, null);
+    }
+});
 
-            const type = document.getElementById('anonType').value;
-            const description = document.getElementById('anonDescription').value;
-            const evidenceFiles = document.getElementById('anonEvidenceFiles')?.files || [];
-
-            if (!type || !description) {
-                alert('Please fill all fields');
-                return;
-            }
-
-            const reports = JSON.parse(localStorage.getItem('anonymousReports')) || [];
-
-            // Process evidence files
-            let evidenceArray = [];
-            let filesProcessed = 0;
-
-            const processFiles = () => {
-                if (filesProcessed === evidenceFiles.length) {
-                    // All files processed, create report
-                    const report = {
-                        id: 'ANON' + Date.now(),
-                        type: type,
-                        description: description,
-                        evidence: evidenceArray, // Array of Base64 images
-                        // NO student ID stored - completely anonymous
-                        createdAt: new Date().toISOString(),
-                        status: 'Submitted'
-                    };
-
-                    reports.push(report);
-                    localStorage.setItem('anonymousReports', JSON.stringify(reports));
-
-                    addNotification('success', 'Anonymous Report Submitted', 'Your report has been submitted safely.');
-                    document.getElementById('anonForm').reset();
-                    document.getElementById('anonEvidencePreview').innerHTML = '';
-                    alert('Anonymous report submitted successfully. Your identity is protected.');
-                }
-            };
-
-            if (evidenceFiles.length === 0) {
-                processFiles();
-            } else {
-                Array.from(evidenceFiles).forEach((file, index) => {
-                    if (file.size > 5 * 1024 * 1024) {
-                        alert(`Evidence file ${index + 1} is too large (max 5MB)`);
-                        return;
-                    }
-
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        evidenceArray.push(e.target.result);
-                        filesProcessed++;
-                        processFiles();
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
+async function submitAnonymousReport(type, description, img) {
+    try {
+        const res = await fetch(`${API_BASE}/anonymous`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                report_type: type,
+                description: description,
+                img: img
+            })
         });
 
-        // Add event listener for evidence file preview
-        document.getElementById('anonEvidenceFiles')?.addEventListener('change', function (e) {
-            const preview = document.getElementById('anonEvidencePreview');
-            preview.innerHTML = '';
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Submission failed");
 
-            Array.from(e.target.files).forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function (evt) {
-                    const img = document.createElement('img');
-                    img.src = evt.target.result;
-                    img.style.maxWidth = '100px';
-                    img.style.maxHeight = '100px';
-                    img.style.borderRadius = '6px';
-                    img.style.border = '2px solid var(--border-color)';
-                    preview.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            });
-        });
+        addNotification(
+            'success',
+            'Anonymous Report Submitted',
+            'Your report has been submitted safely.'
+        );
 
-        function loadWardenAnonymous() {
-            const reports = JSON.parse(localStorage.getItem('anonymousReports')) || [];
+        document.getElementById('anonForm').reset();
+        document.getElementById('anonEvidencePreview').innerHTML = '';
 
-            if (reports.length === 0) {
-                document.getElementById('wardenAnonymousList').innerHTML = '<div class="empty-state"><h3>No anonymous reports</h3></div>';
-                return;
-            }
+        alert('Anonymous report submitted successfully.');
 
-            const html = reports.map(report => `
-                <div class="list-item">
-                    <div class="list-item-content">
-                        <h4>Anonymous Report - ${report.id}</h4>
-                        <p><strong>Type:</strong> ${report.type}</p>
-                        <p>${report.description.substring(0, 150)}...</p>
-                        ${report.evidence && report.evidence.length > 0 ? `<p><strong>Evidence:</strong> ${report.evidence.length} file(s) attached</p>` : ''}
-                        <p style="font-size: 12px;">Submitted: ${new Date(report.createdAt).toLocaleString()}</p>
-                    </div>
-                    <div class="list-item-actions">
-                        <button class="btn-sm btn-primary" onclick="viewAnonReport('${report.id}')">View Details</button>
-                    </div>
+    } catch (err) {
+        console.error("❌ Anonymous submit error:", err);
+        alert("Failed to submit anonymous report");
+    }
+}
+
+/* ================= IMAGE PREVIEW (UNCHANGED UI) ================= */
+document.getElementById('anonEvidenceFiles')?.addEventListener('change', function (e) {
+    const preview = document.getElementById('anonEvidencePreview');
+    preview.innerHTML = '';
+
+    Array.from(e.target.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+            const img = document.createElement('img');
+            img.src = evt.target.result;
+            img.style.maxWidth = '100px';
+            img.style.maxHeight = '100px';
+            img.style.borderRadius = '6px';
+            img.style.border = '2px solid var(--border-color)';
+            preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    });
+});
+
+/* ================= WARDEN: LOAD ANONYMOUS REPORTS ================= */
+async function loadWardenAnonymous() {
+    try {
+        const res = await fetch(`${API_BASE}/anonymous`);
+        const reports = await res.json();
+
+        if (!Array.isArray(reports) || reports.length === 0) {
+            document.getElementById('wardenAnonymousList').innerHTML =
+                '<div class="empty-state"><h3>No anonymous reports</h3></div>';
+            return;
+        }
+
+        const html = reports.map(r => `
+            <div class="list-item">
+                <div class="list-item-content">
+                    <h4>Anonymous Report #${r.id}</h4>
+                    <p><strong>Type:</strong> ${r.report_type}</p>
+                    <p>${r.description.substring(0, 150)}...</p>
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="status-badge status-${r.status.toLowerCase().replace(' ', '-')}">
+                            ${r.status}
+                        </span>
+                    </p>
+                    <p style="font-size: 12px;">
+                        Submitted: ${new Date(r.created_at).toLocaleString()}
+                    </p>
                 </div>
-            `).join('');
+                <div class="list-item-actions">
+                    <button class="btn-sm btn-primary"
+                        onclick="viewAnonReport(${r.id})">View</button>
 
-            document.getElementById('wardenAnonymousList').innerHTML = html;
-        }
+                    <button class="btn-sm btn-warning"
+                        onclick="updateAnonStatus(${r.id}, 'In Review')">In Review</button>
 
-        function viewAnonReport(reportId) {
-            const reports = JSON.parse(localStorage.getItem('anonymousReports')) || [];
-            const report = reports.find(r => r.id === reportId);
+                    <button class="btn-sm btn-success"
+                        onclick="updateAnonStatus(${r.id}, 'Closed')">Close</button>
+                </div>
+            </div>
+        `).join('');
 
-            if (!report) return;
+        document.getElementById('wardenAnonymousList').innerHTML = html;
 
-            let html = `
-                <div class="form-group">
-                    <p><strong>Report ID:</strong> ${report.id}</p>
-                    <p><strong>Type:</strong> ${report.type}</p>
-                    <p><strong>Status:</strong> <span class="status-badge status-submitted">${report.status}</span></p>
-                    <p><strong>Submitted:</strong> ${new Date(report.createdAt).toLocaleString()}</p>
-                    <p><strong>Description:</strong></p>
-                    <p style="background-color: var(--light-bg); padding: 10px; border-radius: 6px; border-left: 4px solid var(--warning-color);">${report.description}</p>
+    } catch (err) {
+        console.error("❌ Load anonymous reports error:", err);
+        alert("Failed to load anonymous reports");
+    }
+}
+
+/* ================= WARDEN: VIEW FULL REPORT ================= */
+async function viewAnonReport(reportId) {
+    try {
+        const res = await fetch(`${API_BASE}/anonymous`);
+        const reports = await res.json();
+        const report = reports.find(r => r.id === reportId);
+
+        if (!report) return;
+
+        let html = `
+            <div class="form-group">
+                <p><strong>Report ID:</strong> ${report.id}</p>
+                <p><strong>Type:</strong> ${report.report_type}</p>
+                <p><strong>Status:</strong>
+                    <span class="status-badge status-${report.status.toLowerCase().replace(' ', '-')}">
+                        ${report.status}
+                    </span>
+                </p>
+                <p><strong>Submitted:</strong>
+                    ${new Date(report.created_at).toLocaleString()}
+                </p>
+                <p><strong>Description:</strong></p>
+                <p style="background-color: var(--light-bg); padding: 10px; border-radius: 6px;">
+                    ${report.description}
+                </p>
+        `;
+
+        if (report.img) {
+            html += `
+                <p><strong>Evidence:</strong></p>
+                <img src="${report.img}"
+                     style="max-width: 100%; border-radius: 6px; margin-top: 10px;">
             `;
-
-            if (report.evidence && report.evidence.length > 0) {
-                html += `<p><strong>Evidence:</strong></p><div style="display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0;">`;
-                report.evidence.forEach((img, idx) => {
-                    html += `<img src="${img}" style="max-width: 150px; max-height: 150px; border-radius: 6px; border: 1px solid var(--border-color);">`;
-                });
-                html += `</div>`;
-            }
-
-            html += `</div>`;
-
-            document.getElementById('complaintModalContent').innerHTML = html;
-            document.getElementById('complaintModal').classList.add('active');
         }
+
+        html += `</div>`;
+
+        document.getElementById('complaintModalContent').innerHTML = html;
+        document.getElementById('complaintModal').classList.add('active');
+
+    } catch (err) {
+        console.error("❌ View anonymous report error:", err);
+    }
+}
+
+/* ================= WARDEN: UPDATE STATUS ================= */
+async function updateAnonStatus(id, status) {
+    try {
+        const res = await fetch(`${API_BASE}/anonymous/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        alert("Status updated successfully");
+        loadWardenAnonymous();
+
+    } catch (err) {
+        console.error("❌ Update status error:", err);
+        alert("Failed to update report status");
+    }
+}
 
         // ========== ESCORT REQUESTS ==========
         document.getElementById('escortForm')?.addEventListener('submit', async function (e) {
@@ -2851,11 +2919,16 @@
                 <div>
                     <p><strong>Parent Name:</strong> ${user.parentName}</p>
                     <p><strong>Parent Contact:</strong> ${user.parentContact}</p>
-                    <p><strong>Registration Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
+                    
+                     <p><strong>Admission Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
+                   
                 </div>
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color);">
                 ${idProofHtml}
             `;
+
+            // <p><strong>Registration Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
+            //  <p><strong>Admission Date:</strong> ${new Date(user.admissionAt).toLocaleString()}</p>
 
             document.getElementById('studentProfileContent').innerHTML = html;
 
@@ -2902,7 +2975,6 @@
                         <p><strong>Email:</strong> ${user.email}</p>
                         <p><strong>Date of Birth:</strong> ${user.dob ? new Date(user.dob).toLocaleDateString() : 'N/A'}</p>
                         <p><strong>Phone:</strong> ${user.phone}</p>
-                        <p><strong>Registration Date:</strong> ${new Date(user.registeredAt).toLocaleString()}</p>
                     </div>
                 </div>
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border-color);">
