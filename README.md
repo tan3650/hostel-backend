@@ -6,6 +6,13 @@ Preferably please use int type for ids.
 ### **✦ Railway Backend Project**
  https://railway.com/project/299a6539-7f79-4375-a033-846a78889535?
 
+#### Added a zip file with additional stuff if needed (sql dump, vid, screenshots).
+
+
+
+
+
+
 
 <h1 align="center">  
 . ݁₊ ⊹ . ݁˖ . ݁  Digital Hostel Management System  . ݁₊ ⊹ . ݁˖ . ݁  
