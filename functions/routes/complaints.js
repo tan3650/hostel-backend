@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
     "SELECT * FROM complaints ORDER BY created_at DESC",
     (err, results) => {
       if (err) {
-        console.error(" Fetch complaints error:", err);
+        console.error("❌ Fetch complaints error:", err);
         return res.status(500).json({ error: "Database error" });
       }
       res.json(results);
@@ -29,7 +29,7 @@ router.get("/:student_id", (req, res) => {
     [req.params.student_id],
     (err, results) => {
       if (err) {
-        console.error(" Fetch student complaints error:", err);
+        console.error("❌ Fetch student complaints error:", err);
         return res.status(500).json({ error: "Database error" });
       }
       res.json(results);
@@ -59,7 +59,7 @@ router.post("/", (req, res) => {
     [student_id, title, description, priority],
     (err) => {
       if (err) {
-        console.error(" Insert complaint error:", err);
+        console.error("❌ Insert complaint error:", err);
         return res.status(500).json({ error: "Database error" });
       }
       res.json({ message: "Complaint created" });
@@ -73,7 +73,7 @@ router.post("/", (req, res) => {
  */
 router.put("/:id", (req, res) => {
   const { status } = req.body;
-  const complaintId = Number(req.params.id); 
+  const complaintId = Number(req.params.id);
 
   if (!status) {
     return res.status(400).json({ error: "Status required" });
@@ -84,13 +84,18 @@ router.put("/:id", (req, res) => {
   }
 
   db.query(
-    "UPDATE complaints SET status = ?, updated_at = NOW() WHERE id = ?",
+    "UPDATE complaints SET status = ? WHERE id = ?",
     [status, complaintId],
-    (err) => {
+    (err, result) => {
       if (err) {
-        console.error(" Update complaint error:", err);
+        console.error("❌ Update complaint error:", err);
         return res.status(500).json({ error: "Database error" });
       }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Complaint not found" });
+      }
+
       res.json({ message: "Complaint updated" });
     }
   );
