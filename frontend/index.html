@@ -1598,21 +1598,6 @@
         function initializeApp() {
             const escorts = JSON.parse(localStorage.getItem('escorts')) || [];
             const myEscorts = escorts.filter(e => e.studentId === currentUser.id);
-
-
-
-
-            if (!localStorage.getItem('leaves')) {
-                localStorage.setItem('leaves', JSON.stringify([]));
-            }
-
-            if (!localStorage.getItem('escorts')) {
-                localStorage.setItem('escorts', JSON.stringify([]));
-            }
-
-
-
-
             applyAccessibilitySettings();
         }
 
@@ -1931,7 +1916,6 @@
             updateTranslations();
             updateFontSizeButtons();
             updateThemeButton();
-            renderDashboard();
         }
 
         function updateTranslations() {
@@ -2274,6 +2258,36 @@
             }
         }
 
+        function renderStudentComplaints(complaints) {
+            const list = document.getElementById('complaintsList');
+            if (!list) return;
+
+            if (!Array.isArray(complaints) || complaints.length === 0) {
+                list.innerHTML = '<div class="empty-state"><h3>No complaints found</h3></div>';
+                return;
+            }
+
+            list.innerHTML = complaints.map(c => `
+        <div class="list-item">
+            <div class="list-item-content">
+                <h4>${c.title}</h4>
+                <p>${c.description}</p>
+                <p><strong>Priority:</strong> ${c.priority}</p>
+                <p>
+                    <strong>Status:</strong>
+                    <span class="status-badge status-${c.status.toLowerCase().replace(' ', '-')}">
+                        ${c.status}
+                    </span>
+                </p>
+                <p style="font-size:12px;">
+                    Submitted: ${new Date(c.created_at).toLocaleString()}
+                </p>
+            </div>
+        </div>
+    `).join('');
+        }
+
+
 
 
         // async function loadStudentComplaints() {
@@ -2315,9 +2329,16 @@
         //     alert("Failed to load complaints");
         // }
         // }
+        async function filterComplaints() {
+            const filter = document.getElementById('complaintStatusFilter').value;
+            const res = await fetch(`${API_BASE}/complaints/${currentUser.id}`);
+            let complaints = await res.json();
 
-        function filterComplaints() {
-            loadStudentComplaints();
+            if (filter) {
+                complaints = complaints.filter(c => c.status === filter);
+            }
+
+            renderStudentComplaints(complaints);
         }
 
         async function loadStudentActivityFeed() {
@@ -2379,31 +2400,36 @@
             }
         }
 
-        function viewComplaintDetail(complaintId) {
+        async function viewComplaintDetail(complaintId) {
+            try {
+                const res = await fetch(`${API_BASE}/complaints/${currentUser.id}`);
+                const complaints = await res.json();
 
-            const complaint = complaints.find(c => c.id === complaintId);
+                const complaint = complaints.find(c => c.id === complaintId);
+                if (!complaint) return;
 
-            if (!complaint) return;
+                const html = `
+            <p><strong>ID:</strong> ${complaint.id}</p>
+            <p><strong>Category:</strong> ${complaint.title}</p>
+            <p><strong>Priority:</strong> ${complaint.priority}</p>
+            <p>
+                <strong>Status:</strong>
+                <span class="status-badge status-${complaint.status.toLowerCase().replace(' ', '-')}">
+                    ${complaint.status}
+                </span>
+            </p>
+            <p><strong>Description:</strong></p>
+            <p>${complaint.description}</p>
+        `;
 
-            let html = `
-                <div class="form-group">
-                    <p><strong>Complaint ID:</strong> ${complaint.id}</p>
-                    <p><strong>Category:</strong> ${complaint.category}</p>
-                    <p><strong>Priority:</strong> ${complaint.priority}</p>
-                    <p><strong>Status:</strong> <span class="status-badge status-${complaint.status.toLowerCase().replace(' ', '-')}">${complaint.status}</span></p>
-                    <p><strong>Description:</strong></p>
-                    <p>${complaint.description}</p>
-            `;
+                document.getElementById('complaintModalContent').innerHTML = html;
+                document.getElementById('complaintModal').classList.add('active');
 
-            if (complaint.image && userRole === 'student') {
-                html += `<p><strong>Attached Image:</strong></p><img src="${complaint.image}" style="max-width: 100%; border-radius: 6px; margin-top: 10px;">`;
+            } catch (err) {
+                console.error("View complaint error:", err);
             }
-
-            html += `</div>`;
-
-            document.getElementById('complaintModalContent').innerHTML = html;
-            document.getElementById('complaintModal').classList.add('active');
         }
+
 
         // ========== LEAVES ==========
         document.getElementById('leaveForm')?.addEventListener('submit', async function (e) {
@@ -2455,70 +2481,51 @@
         async function loadStudentNightOuts() {
             if (!currentUser) return;
 
+            const container = document.getElementById('leaveStatusContent');
+            if (!container) return; // safety guard
+
             try {
                 const res = await fetch(`${API_BASE}/nightout/${currentUser.id}`);
                 const leaves = await res.json();
 
-                if (!leaves.length) {
-                    document.getElementById('leavesList').innerHTML =
+                if (!Array.isArray(leaves) || leaves.length === 0) {
+                    container.innerHTML =
                         '<div class="empty-state"><h3>No night-out requests</h3></div>';
                     return;
                 }
 
-                const html = leaves.map(l => `
-            <div class="list-item">
-                <div class="list-item-content">
-                    <h4>${new Date(l.from_date).toLocaleString()} → ${new Date(l.to_date).toLocaleString()}</h4>
-                    <p>${l.reason}</p>
-                    <p><strong>Status:</strong>
-                        <span class="status-badge status-${l.status.toLowerCase()}">
-                            ${l.status}
-                        </span>
-                    </p>
+                container.innerHTML = `
+            <div class="section-title">Night-out Request Status</div>
+            ${leaves.map(l => `
+                <div class="list-item">
+                    <div class="list-item-content">
+                        <h4>
+                            ${new Date(l.from_date).toLocaleString()}
+                            →
+                            ${new Date(l.to_date).toLocaleString()}
+                        </h4>
+                        <p><strong>Reason:</strong> ${l.reason}</p>
+                        <p>
+                            <strong>Status:</strong>
+                            <span class="status-badge status-${l.status.toLowerCase()}">
+                                ${l.status}
+                            </span>
+                        </p>
+                        <p style="font-size:12px;">
+                            Submitted: ${new Date(l.created_at).toLocaleString()}
+                        </p>
+                    </div>
                 </div>
-            </div>
-        `).join('');
-
-                document.getElementById('leavesList').innerHTML = html;
+            `).join('')}
+        `;
 
             } catch (err) {
-                console.error(err);
-                alert("Failed to load night-out requests");
+                console.error("Night-out load error:", err);
+                container.innerHTML =
+                    '<div class="empty-state"><h3>Failed to load night-out requests</h3></div>';
             }
         }
 
-
-        function approveLeave(leaveId) {
-            const leaves = JSON.parse(localStorage.getItem('leaves')) || [];
-            const leave = leaves.find(l => l.id === leaveId);
-
-            if (!leave) return;
-
-            leave.status = 'Approved';
-            leave.approvedAt = new Date().toISOString();
-            leave.approvedBy = currentUser.id;
-
-            localStorage.setItem('leaves', JSON.stringify(leaves));
-            addNotification('success', 'Leave Approved', `Leave request for ${leave.studentName} has been approved.`);
-            loadWardenLeaves();
-            renderWardenDashboard();
-        }
-
-        function rejectLeave(leaveId) {
-            const leaves = JSON.parse(localStorage.getItem('leaves')) || [];
-            const leave = leaves.find(l => l.id === leaveId);
-
-            if (!leave) return;
-
-            leave.status = 'Rejected';
-            leave.rejectedAt = new Date().toISOString();
-            leave.rejectedBy = currentUser.id;
-
-            localStorage.setItem('leaves', JSON.stringify(leaves));
-            addNotification('error', 'Leave Rejected', `Leave request for ${leave.studentName} has been rejected.`);
-            loadWardenLeaves();
-            renderWardenDashboard();
-        }
 
         function filterWardenLeaves() {
             loadWardenLeaves();
@@ -2647,8 +2654,6 @@
                     </p>
                 </div>
                 <div class="list-item-actions">
-                    <button class="btn-sm btn-primary"
-                        onclick="viewAnonReport(${r.id})">View</button>
 
                     <button class="btn-sm btn-warning"
                         onclick="updateAnonStatus(${r.id}, 'In Review')">In Review</button>
@@ -3170,10 +3175,6 @@
                     <p>${c.description.substring(0, 100)}...</p>
                 </div>
                 <div class="list-item-actions">
-                     <button class="btn-sm btn-primary"
-    onclick="updateComplaintStatus('${c.id}', 'In Progress')">
-    In Progress
-</button>
 <button class="btn-sm btn-success"
     onclick="updateComplaintStatus('${c.id}', 'Resolved')">
     Resolve
@@ -3340,7 +3341,9 @@
                     return;
                 }
 
-                const latest = data[0];
+                const sorted = data.slice().reverse();
+                const latest = sorted[0];
+
 
                 announcementsPreview.innerHTML = `
             <div class="notification info">
