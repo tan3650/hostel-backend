@@ -1,12 +1,10 @@
 {
   "hosting": {
     "public": "frontend",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "rewrites": [
-      {
-        "source": "/hostel-backend-production-9c02.up.railway.app/**",
-        "destination": "/404.html"
-      }
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
     ]
   }
 }

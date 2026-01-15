@@ -8,7 +8,7 @@ console.log("ENV CHECK:", {
 
 
 
-// ✅ MUST use createPool on Railway
+//  MUST use createPool on Railway
 const pool = mysql.createPool({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
@@ -19,18 +19,18 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
 
-  // 🔥 REQUIRED for Railway MySQL
+  //  REQUIRED for Railway MySQL
   ssl: {
     rejectUnauthorized: false
   }
 });
 
-// ✅ Safe connection test
+//  Safe connection test
 pool.getConnection((err, connection) => {
   if (err) {
-    console.error("❌ MySQL connection failed:", err);
+    console.error(" MySQL connection failed:", err);
   } else {
-    console.log("✅ MySQL connected to Railway");
+    console.log(" MySQL connected to Railway");
     connection.release();
   }
 });

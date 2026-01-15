@@ -5,14 +5,13 @@ const db = require("../db");
 /**
  * GET /complaints
  * Warden: get ALL complaints
- * ⚠️ MUST BE FIRST
  */
 router.get("/", (req, res) => {
   db.query(
     "SELECT * FROM complaints ORDER BY created_at DESC",
     (err, results) => {
       if (err) {
-        console.error("❌ Fetch complaints error:", err);
+        console.error(" Fetch complaints error:", err);
         return res.status(500).json({ error: "Database error" });
       }
       res.json(results);
@@ -30,7 +29,7 @@ router.get("/:student_id", (req, res) => {
     [req.params.student_id],
     (err, results) => {
       if (err) {
-        console.error("❌ Fetch student complaints error:", err);
+        console.error(" Fetch student complaints error:", err);
         return res.status(500).json({ error: "Database error" });
       }
       res.json(results);
@@ -60,7 +59,7 @@ router.post("/", (req, res) => {
     [student_id, title, description, priority],
     (err) => {
       if (err) {
-        console.error("❌ Insert complaint error:", err);
+        console.error(" Insert complaint error:", err);
         return res.status(500).json({ error: "Database error" });
       }
       res.json({ message: "Complaint created" });
@@ -74,7 +73,7 @@ router.post("/", (req, res) => {
  */
 router.put("/:id", (req, res) => {
   const { status } = req.body;
-  const complaintId = Number(req.params.id); // ✅ ONLY FIX
+  const complaintId = Number(req.params.id); 
 
   if (!status) {
     return res.status(400).json({ error: "Status required" });
@@ -89,7 +88,7 @@ router.put("/:id", (req, res) => {
     [status, complaintId],
     (err) => {
       if (err) {
-        console.error("❌ Update complaint error:", err);
+        console.error(" Update complaint error:", err);
         return res.status(500).json({ error: "Database error" });
       }
       res.json({ message: "Complaint updated" });

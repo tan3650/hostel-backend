@@ -5,7 +5,7 @@ const app = express();
 console.log("DB HOST:", process.env.MYSQLHOST);
 // middleware
 app.use(cors({ 
-  origin: ["https://hostel-management-fbproj.web.app"], // Allow both production and local testing
+  origin: ["https://hostel-management-fbproj.web.app"], 
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true 
 }));
