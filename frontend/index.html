@@ -1412,7 +1412,18 @@
     <script>
         // ================= BACKEND CONFIG =================
         const API_BASE = "https://hostel-backend-production-9c02.up.railway.app";
+        // ========== WARDEN RECENT ACTIVITIES (SAFE STUB) ==========
+        function loadWardenRecentActivities() {
+            const container = document.getElementById("wardenRecentActivities");
+            if (!container) return;
 
+            container.innerHTML = `
+        <div class="empty-state">
+            <h3>No recent activities</h3>
+            <p>Recent complaints, leaves, escorts will appear here.</p>
+        </div>
+    `;
+        }
 
         // ========== TRANSLATIONS ==========
         const translations = {
@@ -1997,18 +2008,7 @@
             }
             updateThemeButton();
         }
-        // ========== WARDEN RECENT ACTIVITIES (SAFE STUB) ==========
-        function loadWardenRecentActivities() {
-            const container = document.getElementById("wardenRecentActivities");
-            if (!container) return;
 
-            container.innerHTML = `
-        <div class="empty-state">
-            <h3>No recent activities</h3>
-            <p>Recent complaints, leaves, escorts will appear here.</p>
-        </div>
-    `;
-        }
 
 
         // ========== COMPLAINTS ==========
