@@ -1595,9 +1595,6 @@
                 localStorage.setItem('notifications', JSON.stringify([]));
             }
 
-            if (!localStorage.getItem('announcements')) {
-                localStorage.setItem('announcements', JSON.stringify([]));
-            }
 
             applyAccessibilitySettings();
         }
@@ -3229,242 +3226,175 @@ async function updateAnonStatus(id, status) {
         }
 
         // ========== ANNOUNCEMENTS ==========
-        document.getElementById('announcementForm')?.addEventListener('submit', function (e) {
-            e.preventDefault();
+ // ========== ANNOUNCEMENTS (BACKEND CONNECTED) ==========
 
-            const title = document.getElementById('announcementTitle').value;
-            const text = document.getElementById('announcementText').value;
+// -------- POST ANNOUNCEMENT (WARDEN) --------
+document.getElementById('announcementForm')?.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-            if (!title || !text) {
-                alert('Please fill all fields');
-                return;
-            }
+    const title = document.getElementById('announcementTitle').value.trim();
+    const content = document.getElementById('announcementText').value.trim();
 
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+    if (!title || !content) {
+        alert('Please fill all fields');
+        return;
+    }
 
-            const announcement = {
-                id: 'ANN' + Date.now(),
-                title: title,
-                text: text,
-                postedBy: currentUser.name,
-                postedAt: new Date().toISOString()
-            };
-
-            announcements.push(announcement);
-            localStorage.setItem('announcements', JSON.stringify(announcements));
-
-            document.getElementById('announcementForm').reset();
-            loadAnnouncements();
-            alert('Announcement posted successfully.');
+    try {
+        const res = await fetch(`${API_BASE}/announcements`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title,
+                content,
+                posted_by: currentUser.name
+            })
         });
 
-        function loadAnnouncements() {
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Post failed");
 
-            if (announcements.length === 0) {
-                document.getElementById('announcementsList').innerHTML = '<div class="empty-state"><h3>No announcements yet</h3></div>';
-                return;
-            }
+        alert("Announcement posted successfully");
+        document.getElementById('announcementForm').reset();
+        loadAnnouncements();
+        loadAnnouncementsPreview();
+        loadWardenAnnouncementsPreview();
 
-            const html = announcements.reverse().map(ann => `
+    } catch (err) {
+        console.error("❌ Announcement post error:", err);
+        alert("Failed to post announcement");
+    }
+});
+
+
+// -------- LOAD ANNOUNCEMENTS (WARDEN PAGE) --------
+async function loadAnnouncements() {
+    try {
+        const res = await fetch(`${API_BASE}/announcements`);
+        const announcements = await res.json();
+
+        if (!Array.isArray(announcements) || announcements.length === 0) {
+            document.getElementById('announcementsList').innerHTML =
+                '<div class="empty-state"><h3>No announcements yet</h3></div>';
+            return;
+        }
+
+        document.getElementById('announcementsList').innerHTML =
+            announcements.map(ann => `
                 <div class="notification info">
                     <div class="notification-content">
                         <h4>${ann.title}</h4>
-                        <p>${ann.text}</p>
-                        <p style="font-size: 12px; margin-top: 10px;">Posted by ${ann.postedBy} on ${new Date(ann.postedAt).toLocaleString()}</p>
+                        <p>${ann.content}</p>
+                        <p style="font-size:12px; margin-top:10px;">
+                            Posted by ${ann.posted_by} on
+                            ${new Date(ann.created_at).toLocaleString()}
+                        </p>
                     </div>
                 </div>
             `).join('');
 
-            document.getElementById('announcementsList').innerHTML = html;
+    } catch (err) {
+        console.error("❌ Load announcements error:", err);
+        document.getElementById('announcementsList').innerHTML =
+            '<div class="empty-state"><h3>Failed to load announcements</h3></div>';
+    }
+}
+
+
+// -------- STUDENT DASHBOARD PREVIEW (LATEST ONE) --------
+async function loadAnnouncementsPreview() {
+    try {
+        const res = await fetch(`${API_BASE}/announcements`);
+        const announcements = await res.json();
+
+        if (!Array.isArray(announcements) || announcements.length === 0) {
+            document.getElementById('announcementsPreview').innerHTML =
+                '<div class="empty-state"><p>No announcements</p></div>';
+            return;
         }
 
-        function loadAnnouncementsPreview() {
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+        const ann = announcements[0]; // latest (already DESC from backend)
 
-            if (announcements.length === 0) {
-                document.getElementById('announcementsPreview').innerHTML = '<div class="empty-state"><p>No announcements</p></div>';
-                return;
-            }
-
-            // Show only the latest single announcement (no truncation on preview)
-            const latestAnn = announcements[announcements.length - 1];
-            const html = `
-                <div class="notification info" style="margin-bottom: 10px;">
-                    <div class="notification-content">
-                        <h4>${latestAnn.title}</h4>
-                        <p style="font-size: 13px;">${latestAnn.text}</p>
-                        <p style="font-size: 12px; margin-top: 8px;">Posted on ${new Date(latestAnn.postedAt).toLocaleString()}</p>
-                    </div>
+        document.getElementById('announcementsPreview').innerHTML = `
+            <div class="notification info">
+                <div class="notification-content">
+                    <h4>${ann.title}</h4>
+                    <p>${ann.content}</p>
+                    <p style="font-size:12px; margin-top:8px;">
+                        ${new Date(ann.created_at).toLocaleString()}
+                    </p>
                 </div>
-            `;
+            </div>
+        `;
 
-            document.getElementById('announcementsPreview').innerHTML = html;
+    } catch (err) {
+        console.error("❌ Announcement preview error:", err);
+    }
+}
+
+
+// -------- STUDENT: VIEW ALL ANNOUNCEMENTS --------
+async function loadAllAnnouncements() {
+    try {
+        const res = await fetch(`${API_BASE}/announcements`);
+        const announcements = await res.json();
+
+        if (!Array.isArray(announcements) || announcements.length === 0) {
+            document.getElementById('announcementsFullList').innerHTML =
+                '<div class="empty-state"><h3>No announcements yet</h3></div>';
+            return;
         }
 
-        function loadAllAnnouncements() {
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
-
-            if (announcements.length === 0) {
-                document.getElementById('announcementsFullList').innerHTML = '<div class="empty-state"><h3>No announcements yet</h3></div>';
-                return;
-            }
-
-            const html = announcements.reverse().map(ann => `
+        document.getElementById('announcementsFullList').innerHTML =
+            announcements.map(ann => `
                 <div class="notification info">
                     <div class="notification-content">
                         <h4>${ann.title}</h4>
-                        <p>${ann.text}</p>
-                        <p style="font-size: 12px; margin-top: 10px;">Posted on ${new Date(ann.postedAt).toLocaleString()}</p>
+                        <p>${ann.content}</p>
+                        <p style="font-size:12px; margin-top:10px;">
+                            Posted on ${new Date(ann.created_at).toLocaleString()}
+                        </p>
                     </div>
                 </div>
             `).join('');
 
-            document.getElementById('announcementsFullList').innerHTML = html;
+    } catch (err) {
+        console.error("❌ Load all announcements error:", err);
+    }
+}
+
+
+// -------- WARDEN DASHBOARD PREVIEW --------
+async function loadWardenAnnouncementsPreview() {
+    try {
+        const res = await fetch(`${API_BASE}/announcements`);
+        const announcements = await res.json();
+
+        if (!Array.isArray(announcements) || announcements.length === 0) {
+            document.getElementById('wardenAnnouncementsPreview').innerHTML =
+                '<div class="empty-state"><p>No announcements</p></div>';
+            return;
         }
 
-        // Load latest announcement for warden dashboard preview
-        function loadWardenAnnouncementsPreview() {
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+        const ann = announcements[0];
 
-            if (announcements.length === 0) {
-                document.getElementById('wardenAnnouncementsPreview').innerHTML = '<div class="empty-state"><p>No announcements</p></div>';
-                return;
-            }
-
-            // Show only the latest single announcement (no truncation)
-            const latestAnn = announcements[announcements.length - 1];
-            const html = `
-                <div class="notification info" style="margin-bottom: 10px;">
-                    <div class="notification-content">
-                        <h4>${latestAnn.title}</h4>
-                        <p style="font-size: 13px;">${latestAnn.text}</p>
-                        <p style="font-size: 12px; margin-top: 8px;">Posted on ${new Date(latestAnn.postedAt).toLocaleString()}</p>
-                    </div>
+        document.getElementById('wardenAnnouncementsPreview').innerHTML = `
+            <div class="notification info">
+                <div class="notification-content">
+                    <h4>${ann.title}</h4>
+                    <p>${ann.content}</p>
+                    <p style="font-size:12px; margin-top:8px;">
+                        ${new Date(ann.created_at).toLocaleString()}
+                    </p>
                 </div>
-            `;
+            </div>
+        `;
 
-            document.getElementById('wardenAnnouncementsPreview').innerHTML = html;
-        }
+    } catch (err) {
+        console.error("❌ Warden announcement preview error:", err);
+    }
+}
 
-        // ========== NOTIFICATIONS ==========
-        function addNotification(type, title, message) {
-            const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-
-            const notification = {
-                id: 'NOTIF' + Date.now(),
-                type: type,
-                title: title,
-                message: message,
-                createdAt: new Date().toISOString(),
-                read: false
-            };
-
-            notifications.push(notification);
-            localStorage.setItem('notifications', JSON.stringify(notifications));
-
-            renderNotifications();
-        }
-
-        function renderNotifications() {
-            const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-            const recentNotifications = notifications.slice(-5);
-
-            if (recentNotifications.length === 0) {
-                document.getElementById('notificationsContainer').innerHTML = '';
-                return;
-            }
-
-            const html = recentNotifications.map(notif => `
-                <div class="notification ${notif.type}">
-                    <div class="notification-content">
-                        <h4>${notif.title}</h4>
-                        <p>${notif.message}</p>
-                    </div>
-                    <button class="close-btn" onclick="removeNotification('${notif.id}')">&times;</button>
-                </div>
-            `).join('');
-
-            document.getElementById('notificationsContainer').innerHTML = html;
-        }
-
-        function removeNotification(notifId) {
-            const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-            const filtered = notifications.filter(n => n.id !== notifId);
-            localStorage.setItem('notifications', JSON.stringify(filtered));
-            renderNotifications();
-        }
-
-        // ========== MODAL FUNCTIONS ==========
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // ========== INITIALIZATION ==========
-        window.addEventListener('load', function () {
-            initializeApp();
-            seedAnnouncementsIfEmpty();
-            applyAccessibilitySettings();
-            updateUI();
-
-            // Update register prompt visibility on login page
-            if (document.getElementById('loginPage').classList.contains('active')) {
-                if (userRole === 'student') {
-                    document.getElementById('registerPromptStudent').style.display = 'block';
-                    document.getElementById('registerPromptWarden').style.display = 'none';
-                } else if (userRole === 'warden') {
-                    document.getElementById('registerPromptStudent').style.display = 'none';
-                    document.getElementById('registerPromptWarden').style.display = 'block';
-                }
-            }
-        });
-
-        // Seed demo announcements if empty
-        function seedAnnouncementsIfEmpty() {
-            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
-            if (announcements.length === 0) {
-                const demoAnnouncements = [
-                    {
-                        id: 'ANN1001',
-                        title: 'Welcome to Digital Hostel Management',
-                        text: 'We are excited to launch our new digital hostel management system. This system will help streamline complaints, leave requests, and hostel operations.',
-                        postedBy: 'Mr. Rajesh Kumar',
-                        postedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
-                    },
-                    {
-                        id: 'ANN1002',
-                        title: 'Maintenance Schedule - Water Tank Cleaning',
-                        text: 'The water tank cleaning will be done on Saturday from 10 AM to 2 PM. Students are advised to collect drinking water in advance.',
-                        postedBy: 'Mr. Rajesh Kumar',
-                        postedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
-                    },
-                    {
-                        id: 'ANN1003',
-                        title: 'New Guest Room Booking Policy',
-                        text: 'Effective from next month, guest room bookings must be made 48 hours in advance through the hostel management portal. A deposit of ₹500 is required.',
-                        postedBy: 'Mr. Rajesh Kumar',
-                        postedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
-                    }
-                ];
-                localStorage.setItem('announcements', JSON.stringify(demoAnnouncements));
-            }
-        }
-
-        // Ensure localStorage is available
-        function checkLocalStorageSupport() {
-            try {
-                localStorage.setItem('test', 'test');
-                localStorage.removeItem('test');
-                return true;
-            } catch (e) {
-                alert('localStorage is not available. The application requires localStorage to function.');
-                return false;
-            }
-        }
-
-        if (!checkLocalStorageSupport()) {
-            document.body.innerHTML = '<div style="padding: 40px; text-align: center; color: red;"><h1>Error</h1><p>This browser does not support localStorage. Please use a different browser.</p></div>';
-        }
     </script>
 </body>
 

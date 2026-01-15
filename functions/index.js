@@ -17,6 +17,9 @@ app.use("/escorts", require("./routes/escorts"));
 app.use("/nightout", require("./routes/nightout"));
 const anonymousRoutes = require("./routes/anonymous");
 app.use("/anonymous", anonymousRoutes);
+const announcementsRoutes = require("./routes/announcements");
+app.use("/announcements", announcementsRoutes);
+
 
 // health check
 app.get("/", (req, res) => {
